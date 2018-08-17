@@ -1,0 +1,60 @@
+1.UTF8 insert issues solve
+
+CREATE DATABASE zst CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+SET CHARACTER SET utf8
+
+mysql> show variables like 'char%';
++--------------------------+----------------------------+
+| Variable_name            | Value                      |
++--------------------------+----------------------------+
+| character_set_client     | utf8                       |
+| character_set_connection | utf8                       |
+| character_set_database   | utf8                       |
+| character_set_filesystem | binary                     |
+| character_set_results    | utf8                       |
+| character_set_server     | latin1                     |
+| character_set_system     | utf8                       |
+| character_sets_dir       | /usr/share/mysql/charsets/ |
++--------------------------+----------------------------+
+
+编辑/etc/lampp/etc/my.cnf，在[mysqld]标签下添加以下配置:
+default-character-set = UTF8
+
+CENTOS7
+修改mysql的/etc/my.cnf 
+character_set_server=utf8
+systemctl restart mysqld
+
+
+
+2. install on windows
+bin\mysqld --initialize
+create my.ini
+bin/mysqld --defaults-file=C:\my.ini --initialize
+a temparoy password set in the log
+login and change password
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'tys55jhn'
+https://dev.mysql.com/doc/refman/8.0/en/data-directory-initialization-mysqld.html
+
+
+3.set max blob object size to 20mbytes
+SET GLOBAL max_allowed_packet = 1024*1024*20
+
+
+
+
+-----------------install on linux----------
+1.install
+	wget -i -c http://dev.mysql.com/get/mysql57-community-release-el7-10.noarch.rpm
+	 yum -y install mysql57-community-release-el7-10.noarch.rpm
+	 yum -y install mysql-community-server
+2.start
+systemctl start  mysqld.service
+systemctl status mysqld.service
+3.grep "password" /var/log/mysqld.log
+
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'Passw0rd!_123';
+
+4.yum -y remove mysql57-community-release-el7-10.noarch
+	 

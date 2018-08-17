@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ifarm.console.mapper.ResourceMapper">
+    <resultMap id="BaseResultMap" type="com.ifarm.console.shared.domain.po.ResourcePO">
+        <result column="id" property="tid"/>
+        <result column="resource_code" property="resourceCode"/>
+        <result column="resource_name" property="resourceName"/>
+        <result column="router" property="router"/>
+        <result column="component" property="component"/>
+        <result column="parent_code" property="parentCode"/>
+        <result column="resource_level" property="resourceLevel"/>
+        <result column="resource_type" property="resourceType"/>
+        <result column="display_order" property="displayOrder"/>
+        <result column="node_icon" property="nodeIcon"/>
+        <result column="notes" property="notes"/>
+        <result column="leaf_flag" property="leafFlag"/>
+        <result column="active" property="active"/>
+        <result column="create_time" property="createTime"/>
+        <result column="modify_time" property="modifyTime"/>
+        <collection column="id" property="permissions" ofType="com.ifarm.console.shared.domain.po.PermissionPO">
+            <result column="pid" property="tid"/>
+            <result column="resource_id" property="resourceTid"/>
+            <result column="permission_code" property="permissionCode"/>
+            <result column="permission_name" property="permissionName"/>
+            <result column="edit_able" property="editAble"/>
+            <result column="create_time" property="createTime"/>
+        </collection>
+    </resultMap>
+
+    <resultMap id="MenuResultMap" type="com.ifarm.console.shared.domain.po.ResourcePO">
+        <result column="id" property="tid"/>
+        <result column="resource_code" property="resourceCode"/>
+        <result column="resource_name" property="resourceName"/>
+        <result column="router" property="router"/>
+        <result column="component" property="component"/>
+        <result column="parent_code" property="parentCode"/>
+        <result column="resource_level" property="resourceLevel"/>
+        <result column="resource_type" property="resourceType"/>
+        <result column="display_order" property="displayOrder"/>
+        <result column="node_icon" property="nodeIcon"/>
+        <result column="notes" property="notes"/>
+        <result column="leaf_flag" property="leafFlag"/>
+        <collection column="resource_code" property="childrenNode" ofType="com.ifarm.console.shared.domain.po.ResourcePO">
+            <result column="ch_id" property="tid"/>
+            <result column="ch_resource_code" property="resourceCode"/>
+            <result column="ch_resource_name" property="resourceName"/>
+            <result column="ch_router" property="router"/>
+            <result column="ch_component" property="component"/>
+            <result column="ch_parent_code" property="parentCode"/>
+            <result column="ch_resource_level" property="resourceLevel"/>
+            <result column="ch_resource_type" property="resourceType"/>
+            <result column="ch_display_order" property="displayOrder"/>
+            <result column="ch_node_icon" property="nodeIcon"/>
+            <result column="ch_notes" property="notes"/>
+            <result column="ch_leaf_flag" property="leafFlag"/>
+            <collection column="resource_code" property="childrenNode" ofType="com.ifarm.console.shared.domain.po.ResourcePO">
+                <result column="gch_id" property="tid"/>
+                <result column="gch_resource_code" property="resourceCode"/>
+                <result column="gch_resource_name" property="resourceName"/>
+                <result column="gch_router" property="router"/>
+                <result column="gch_component" property="component"/>
+                <result column="gch_parent_code" property="parentCode"/>
+                <result column="gch_resource_level" property="resourceLevel"/>
+                <result column="gch_resource_type" property="resourceType"/>
+                <result column="gch_display_order" property="displayOrder"/>
+                <result column="gch_node_icon" property="nodeIcon"/>
+                <result column="gch_notes" property="notes"/>
+                <result column="gch_leaf_flag" property="leafFlag"/>
+            </collection>
+        </collection>
+    </resultMap>
+
+
+    <resultMap id="SimplePermissionMap" type="com.ifarm.console.shared.domain.dto.SimplePermissionDTO">
+        <result column="pid" property="tid"/>
+        <result column="resource_id" property="resourceTid"/>
+        <result column="permission_code" property="permissionCode"/>
+        <result column="permission_name" property="permissionName"/>
+    </resultMap>
+
+    <select id="selectByResourceId" resultMap="SimplePermissionMap"  parameterType="java.util.Map">
+          <if test="roleId != null">
+              SELECT
+              ps.id AS pid,
+              ps.resource_id,
+              ps.permission_code,
+              ps.permission_name
+              FROM
+              t_console_permission ps
+              LEFT JOIN t_console_role_permission rp ON ps.id = rp.permission_id
+              WHERE rp.role_id = #{roleId}
+              AND ps.resource_id = #{resourceId}
+          </if>
+          <if test="roleId == null">
+              select ps.id as pid,ps.resource_id,ps.permission_code,ps.permission_name
+              from t_console_permission ps
+              where ps.resource_id = #{resourceId}
+          </if>
+    </select>
+
+    <resultMap id="SimpleResourceMap" type="com.ifarm.console.shared.domain.dto.SimpleResourceDTO">
+        <result column="id" property="tid"/>
+        <result column="resource_code" property="code"/>
+        <result column="resource_name" property="label"/>
+        <result column="leaf_flag" property="isLeaf"/>
+        <collection column="{roleId=role_id,resourceId=id}" property="permissions" select="selectByResourceId"
+                    ofType="com.ifarm.console.shared.domain.dto.SimplePermissionDTO"/>
+        <collection property="children" column="{roleId=role_id,parentCode=resource_code}" select="findDistributeResourceByParent"
+                    ofType="com.ifarm.console.shared.domain.dto.SimpleResourceDTO"/>
+    </resultMap>
+
+    <select id="findDistributeResourceByParent" resultMap="SimpleResourceMap" parameterType="java.util.Map">
+        <if test="roleId != null">
+            select DISTINCT rs.id,rs.resource_code,rs.resource_name,rs.leaf_flag,rp.role_id
+            from t_console_permission p
+            left join t_console_resource rs on rs.id = p.resource_id
+            left join t_console_role_permission rp on p.id = rp.permission_id
+            where rs.active = 'Y'
+            and rp.role_id = #{roleId}
+            and rs.parent_code = #{parentCode}
+        </if>
+        <if test="roleId == null">
+            select rs.id,rs.resource_code,rs.resource_name,rs.leaf_flag,null as role_id
+            from t_console_resource rs
+            where rs.active = 'Y'
+            and rs.parent_code = #{parentCode}
+        </if>
+    </select>
+
+    <select id="userPermission" parameterType="java.lang.String" resultType="java.lang.String">
+        select p.permission_code
+        from t_console_permission p
+        left join t_console_role_permission rp on p.id = rp.permission_id
+        left join t_console_user_role ur on rp.role_id = ur.role_id
+        left join t_console_user u on u.id = ur.user_id
+        where u.user_name = #{userName}
+    </select>
+
+	 <select id="userPermissionNotRole" parameterType="java.lang.String" resultType="java.lang.String">
+        select cp.permission_code from t_console_permission cp
+		left join t_console_user_permission p on p.permission_id = cp.id
+		left join t_console_user u on u.id = p.user_id
+		where u.user_name = #{userName}
+    </select>
+    <sql id="column_sql">
+        rs.id,rs.resource_code,rs.resource_name,rs.router,rs.component,rs.parent_code,rs.resource_level,rs.resource_type,rs.display_order,rs.node_icon,rs.notes,rs.leaf_flag,rs.active,rs.create_time,rs.modify_time
+    </sql>
+
+    <sql id="param_sql">
+        <if test="tid != null">
+            and rs.id = #{tid}
+        </if>
+        <if test="resourceCode">
+            and rs.resource_code = #{resourceCode}
+        </if>
+        <if test="resourceName != null and resourceName != ''">
+            and rs.resource_name like concat('%',concat(#{resourceName},'%'))
+        </if>
+        <if test="router != null and router != ''">
+            and rs.router like concat('%',concat(#{router},'%'))
+        </if>
+        <if test="parentCode != null and parentCode != ''">
+            and rs.parent_code = #{parentCode}
+        </if>
+        <if test="resourceLevel != null">
+            and rs.resource_level = #{resourceLevel}
+        </if>
+        <if test="resourceType != null">
+            and rs.resource_type = #{resourceType}
+        </if>
+        <if test="displayOrder != null">
+            and rs.display_order = #{displayOrder}
+        </if>
+        <if test="nodeIcon != null and nodeIcon != ''">
+            and rs.node_icon like concat('%',concat(#{nodeIcon},'%'))
+        </if>
+        <if test="leafFlag != null and leafFlag != ''">
+            and rs.leaf_flag = #{leafFlag},        </if>
+        <if test="active != null and active != ''">
+            and rs.active = #{active}
+        </if>
+    </sql>
+
+    <select id="findMenuSelectStore" resultType="java.util.Map">
+        select resource_code resourceCode,resource_name resourceName
+        from t_console_resource
+        where active = 'Y'
+    </select>
+
+    <select id="findByCode" resultMap="BaseResultMap">
+        select <include refid="column_sql"/>
+        ,ps.id as pid
+        ,ps.resource_id
+        ,ps.permission_code
+        ,ps.permission_name
+        ,ps.edit_able
+        ,ps.create_time
+        from t_console_resource rs
+        left join t_console_permission ps on rs.id = ps.resource_id
+        <where>
+            <if test="resourceCode != null and resourceCode != ''">
+                and rs.resource_code = #{resourceCode}
+            </if>
+        </where>
+    </select>
+
+    <select id="findByParentCode" resultMap="BaseResultMap">
+        select <include refid="column_sql"/>
+        ,ps.id as pid
+        ,ps.resource_id
+        ,ps.permission_code
+        ,ps.permission_name
+        ,ps.edit_able
+        ,ps.create_time
+        from t_console_resource rs
+        left join t_console_permission ps on rs.id = ps.resource_id
+        <where>
+            <if test="parentCode != null and parentCode != ''">
+                and rs.parent_code = #{parentCode}
+            </if>
+        </where>
+    </select>
+
+    <select id="findMenuByUserAndParent" resultMap="BaseResultMap">
+        select <include refid="column_sql"/>
+        ,p.id as pid
+        ,p.resource_id
+        ,p.permission_code
+        ,p.permission_name
+        ,p.edit_able
+        ,p.create_time
+        from t_console_user u
+        left join t_console_user_role ur on u.id = ur.user_id
+        left join t_console_role r on r.id = ur.role_id
+        left join t_console_role_permission rp on r.id = rp.role_id
+        left join t_console_permission p on p.id = rp.permission_id
+        left join t_console_resource rs on rs.id = p.resource_id
+        where u.user_name = #{userName}
+        and rs.active = 'Y'
+        and rs.parent_code = #{parentCode}
+    </select>
+
+    <select id="findMenuResources" parameterType="java.lang.String" resultMap="MenuResultMap">
+        select <include refid="column_sql"/>
+        ,ch.id as ch_id,
+        ch.resource_code as ch_resource_code,
+        ch.resource_name as ch_resource_name,
+        ch.router as ch_router,
+        ch.component as ch_component,
+        ch.parent_code as ch_parent_code,
+        ch.resource_level as ch_resource_level,
+        ch.resource_type as ch_resource_type,
+        ch.display_order as ch_display_order,
+        ch.node_icon as ch_node_icon,
+        ch.notes as ch_notes,
+        ch.leaf_flag as ch_leaf_flag,
+        gch.id as gch_id,
+        gch.resource_code as gch_resource_code,
+        gch.resource_name as gch_resource_name,
+        gch.router as gch_router,
+        gch.component as gch_component,
+        gch.parent_code as gch_parent_code,
+        gch.resource_level as gch_resource_level,
+        gch.resource_type as gch_resource_type,
+        gch.display_order as gch_display_order,
+        gch.node_icon as gch_node_icon,
+        gch.notes as gch_notes,
+        gch.leaf_flag as gch_leaf_flag
+        from t_console_user u
+        left join t_console_user_role ur on u.id = ur.user_id
+        left join t_console_role r on r.id = ur.role_id
+        left join t_console_role_permission rp on r.id = rp.role_id
+        left join t_console_permission p on p.id = rp.permission_id
+        left join t_console_resource rs on rs.id = p.resource_id
+        left join t_console_resource ch on rs.resource_code = ch.parent_code
+        left join t_console_resource gch on ch.resource_code = gch.parent_code
+        where u.user_name = #{userName}
+        and rs.active = 'Y'
+        and ch.active = 'Y'
+        and gch.active = 'Y'
+        and rs.resource_code = 'console_1'
+    </select>
+
+    <select id="totalCount" parameterType="com.ifarm.console.shared.domain.po.ResourcePO" resultMap="BaseResultMap">
+        select count(*)
+        from t_console_resource rs
+        <where>
+            <include refid="param_sql"/>
+        </where>
+    </select>
+
+    <select id="findByParam" parameterType="com.ifarm.console.shared.domain.po.ResourcePO" resultMap="BaseResultMap">
+        select <include refid="column_sql"/>
+        from t_console_resource rs
+        <where>
+            <include refid="param_sql"/>
+        </where>
+    </select>
+
+    <select id="findByById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select <include refid="column_sql"/>
+        from t_console_resource rs
+        where rs.id = #{id}
+    </select>
+
+    <update id="updateActiveByIds">
+        update t_console_resource
+        set active = #{active}
+        where id in
+        <foreach collection="ids" open="(" close=")" item="item" separator=",">
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="update" parameterType="com.ifarm.console.shared.domain.po.ResourcePO">
+        update t_console_resource
+        <set>
+            <if test="resourceName != null and resourceName != ''">
+                resource_name = #{resourceName},
+            </if>
+            <if test="router != null and router != ''">
+                router = #{router},
+            </if>
+            <if test="component != null and component != ''">
+                component = #{component},
+            </if>
+            <if test="parentCode != null and parentCode != ''">
+                parent_code = #{parentCode},
+            </if>
+            <if test="resourceLevel != null">
+                resource_level = #{resourceLevel},
+            </if>
+            <if test="resourceType != null">
+                resource_type = #{resourceType},
+            </if>
+            <if test="displayOrder != null">
+                display_order = #{displayOrder},
+            </if>
+            <if test="nodeIcon != null and nodeIcon != ''">
+                node_icon = #{nodeIcon},
+            </if>
+            <if test="notes != null and notes != ''">
+                notes = #{notes},
+            </if>
+            <if test="leafFlag != null and leafFlag != ''">
+                leaf_flag = #{leafFlag},
+            </if>
+            <if test="active != null and active != ''">
+                active = #{active},
+            </if>
+            <if test="modifyTime != null">
+                modify_time = #{modifyTime}
+            </if>
+        </set>
+        <where>
+            <if test="tid != null">
+                and id = #{tid}
+            </if>
+            <if test="resourceCode">
+                and resource_code = #{resourceCode}
+            </if>
+        </where>
+    </update>
+
+    <insert useGeneratedKeys="true" keyProperty="tid" id="insert" parameterType="com.ifarm.console.shared.domain.po.ResourcePO">
+        insert into t_console_resource(resource_code,resource_name,router,component,parent_code,resource_level,resource_type,display_order,node_icon,notes,leaf_flag,active,create_time,modify_time)
+        values(#{resourceCode},#{resourceName},#{router},#{component},#{parentCode},#{resourceLevel},#{resourceType},#{displayOrder},#{nodeIcon},#{notes},#{leafFlag},#{active},#{createTime},#{modifyTime})
+    </insert>
+
+    <insert useGeneratedKeys="true" keyProperty="tid" id="insertPermission" parameterType="com.ifarm.console.shared.domain.po.PermissionPO">
+        insert into t_console_permission(resource_id,permission_code,permission_name,edit_able,create_time)
+        values(#{resourceTid},#{permissionCode},#{permissionName},#{editAble},#{createTime})
+    </insert>
+
+    <update id="updatePermission" parameterType="com.ifarm.console.shared.domain.po.PermissionPO">
+        update t_console_permission
+        <set>
+            <if test="permissionCode != null and permissionCode != ''">
+                permission_code = #{permissionCode},
+            </if>
+            <if test="permissionName != null and permissionName != ''">
+                permission_name = #{permissionName},
+            </if>
+        </set>
+        <where>
+            <if test="tid != null">
+                and id = #{tid}
+            </if>
+        </where>
+    </update>
+
+    <delete id="deletePermission" parameterType="java.util.List">
+        delete from t_console_permission
+        where id in
+        <foreach collection="list" open="(" close=")" item="item" separator=",">
+            #{item}
+        </foreach>
+    </delete>
+
+    <delete id="deleteRolePermissions" parameterType="java.lang.Integer">
+        delete from t_console_role_permission where role_id = #{roleId}
+    </delete>
+
+    <insert id="insertRolePermissionBatch" parameterType="java.util.List">
+        insert into t_console_role_permission(role_id, permission_id, create_time) values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.roleTid},#{item.permissionTid},#{item.createTime})
+        </foreach>
+    </insert>
+</mapper>

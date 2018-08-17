@@ -1,0 +1,13 @@
+1.yum install redis
+2.service redis start
+或者
+systemctl start redis
+
+3.
+chkconfig redis on
+或者
+systemctl enable redis.service
+
+4. redis-cli
+set key "hello"
+get key

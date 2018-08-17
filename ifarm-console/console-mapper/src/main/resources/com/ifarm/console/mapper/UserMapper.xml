@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ifarm.console.mapper.UserMapper">
+
+	<resultMap id="UserPermissionMap" type="com.ifarm.console.shared.domain.po.PermissionNotRolePO">
+	  <result column="id" property="tid"/>
+	    <result column="user_id" property="userid"/>
+	    <result column="permission_id" property="permissionid"/>
+	    <result column="create_time" property="createTime"/>
+	</resultMap>
+    <resultMap id="BaseResultMap" type="com.ifarm.console.shared.domain.po.UserInfoPO">
+        <result column="id" property="tid"/>
+        <result column="user_name" property="userName"/>
+        <result column="password" property="password"/>
+        <result column="nick_name" property="nickName"/>
+        <result column="salt" property="salt"/>
+        <result column="email" property="email"/>
+        <result column="mobile_no" property="mobileNo"/>
+        <result column="emp_code" property="empCode"/>
+        <result column="dept_code" property="deptCode"/>
+        <result column="notes" property="notes"/>
+        <result column="active" property="active"/>
+        <result column="create_time" property="createTime"/>
+        <result column="modify_time" property="modifyTime"/>
+    </resultMap>
+
+    <resultMap id="ResultWithRoleMap" type="com.ifarm.console.shared.domain.po.UserInfoPO" extends="BaseResultMap">
+        <collection column="role_code" property="roles" ofType="java.lang.String">
+            <result column="role_code" />
+        </collection>
+        <collection column="permission_code" property="permissions" ofType="java.lang.String">
+            <result column="permission_code"/>
+        </collection>
+    </resultMap>
+
+    <sql id="columns_sql">
+        u.id,u.user_name,u.nick_name,u.email,u.mobile_no,u.emp_code,u.dept_code,u.notes,u.active,u.create_time,u.modify_time
+    </sql>
+
+    <sql id="param_sql">
+        <if test="tid != null">
+            and u.id = #{tid}
+        </if>
+        <if test="userName != null and userName != ''">
+            and u.user_name = #{userName}
+        </if>
+        <if test="password != null and password != ''">
+            and u.password = #{password}
+        </if>
+        <if test="nickName != null and nickName != ''">
+            and u.nick_name like concat('%',concat(#{nickName},'%'))
+        </if>
+        <if test="salt != null and salt != ''">
+            and u.salt = #{salt}
+        </if>
+        <if test="email != null and email != ''">
+            and u.email = #{email}
+        </if>
+        <if test="mobileNo != null and mobileNo != ''">
+            and u.mobile_no = #{mobileNo}
+        </if>
+        <if test="empCode != null and empCode != ''">
+            and u.emp_code = #{empCode}
+        </if>
+        <if test="deptCode != null and deptCode != ''">
+            and u.dept_code = #{deptCode}
+        </if>
+        <if test="active != null and active != ''">
+            and u.active = #{active}
+        </if>
+    </sql>
+
+    <select id="findById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select <include refid="columns_sql"/>
+        ,u.password
+        ,u.salt
+        from t_console_user u where u.id = #{tid}
+    </select>
+
+    <select id="totalCount" parameterType="com.ifarm.console.shared.domain.po.UserInfoPO" resultType="java.lang.Long">
+        select count(*)
+        from t_console_user u
+        <where>
+            <include refid="param_sql"/>
+        </where>
+    </select>
+
+    <select id="findByParam" parameterType="com.ifarm.console.shared.domain.po.UserInfoPO" resultMap="BaseResultMap">
+        select <include refid="columns_sql"/>
+        from t_console_user u
+        <where>
+            <include refid="param_sql"/>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="findByUserName" parameterType="java.lang.String" resultMap="ResultWithRoleMap">
+        select <include refid="columns_sql"/>
+        ,u.password
+        ,u.salt
+        ,r.role_code
+        ,p.permission_code
+        from t_console_user u
+        left join t_console_user_role ur on u.id = ur.user_id
+        left join t_console_role r on r.id = ur.role_id
+        left join t_console_role_permission rp on r.id = rp.role_id
+        left join t_console_permission p on p.id = rp.permission_id
+        where u.user_name = #{userName}
+    </select>
+
+    <select id="findLoginUser" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select <include refid="columns_sql"/>
+        ,u.password
+        ,u.salt
+        from t_console_user u
+        where u.user_name = #{userName}
+    </select>
+
+    <update id="updateActive" parameterType="java.util.List">
+        update t_console_user set active = #{active}
+        <where>
+            id in
+            <foreach collection="ids" open="(" close=")" item="item" separator=",">
+                #{item}
+            </foreach>
+        </where>
+    </update>
+
+    <update id="update" parameterType="com.ifarm.console.shared.domain.po.UserInfoPO">
+        update t_console_user
+        <set>
+            <if test="password != null and password != ''">
+                password = #{password},
+            </if>
+            <if test="nickName != null and nickName != ''">
+                nick_name = #{nickName},
+            </if>
+            <if test="salt != null and salt != ''">
+                salt = #{salt},
+            </if>
+            <if test="email != null and email != ''">
+                email = #{email},
+            </if>
+            <if test="mobileNo != null and mobileNo != ''">
+                mobile_no = #{mobileNo},
+            </if>
+            <if test="empCode != null and empCode != ''">
+                emp_code = #{empCode},
+            </if>
+            <if test="deptCode != null and deptCode != ''">
+                dept_code = #{deptCode},
+            </if>
+            <if test="notes != null and notes != ''">
+                notes = #{notes},
+            </if>
+            <if test="active != null and active != ''">
+                active = #{active},
+            </if>
+            <if test="modifyTime != null">
+                modify_time = #{modifyTime},
+            </if>
+        </set>
+        <where>
+            <if test="tid != null">
+                and id = #{tid}
+            </if>
+            <if test="userName != null and userName != ''">
+                and user_name = #{userName}
+            </if>
+        </where>
+    </update>
+
+    <insert id="insert" parameterType="com.ifarm.console.shared.domain.po.UserInfoPO">
+        insert into t_console_user(user_name,password,nick_name,salt,email,mobile_no,emp_code,dept_code,notes,active,create_time,modify_time)
+        values(#{userName},#{password},#{nickName},#{salt},#{email},#{mobileNo},#{empCode},#{deptCode},#{notes},#{active},#{createTime},#{modifyTime})
+    </insert>
+
+    <insert id="saveUserRoleBatch" parameterType="java.util.List">
+        insert into t_console_user_role(user_id, role_id, create_time) values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.userTid},#{item.roleTid},#{item.createTime})
+        </foreach>
+    </insert>
+
+    <delete id="deleteUserRole" parameterType="java.lang.Integer">
+        delete from t_console_user_role where user_id = #{userId}
+    </delete>
+    
+     <delete id="deleteUserByID" parameterType="java.lang.Integer">
+        delete from t_console_user where id = #{userId}
+    </delete>
+    <insert id="insertUserPermissionNotRole" parameterType="com.ifarm.console.shared.domain.po.PermissionNotRolePO">
+        insert into t_console_user_permission(id,user_id,permission_id,create_time)
+        values(#{tid},#{userid},#{permissionid},#{createTime})
+    </insert>
+    
+     <delete id="deleteUserPermissionNotRole" parameterType="java.lang.Integer">
+        delete from t_console_user_permission where user_id = #{userId}
+    </delete>
+    
+</mapper>

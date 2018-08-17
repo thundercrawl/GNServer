@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ifarm.console.mapper.ZhiDeContractMapper">
+<resultMap id = "result" type = "com.ifarm.console.shared.domain.po.ZhiDeContractPO">
+<result property="tid" column="id"/>     
+    <result property="filename" column="filename"/>  
+    <result property="serialnum" column="serialnum" />  
+    <result property="contractname" column="contractname" />  
+    <result property="contractusage" column="contractusage" />  
+    <result property="signedPart" column="signedPart" />  
+    <result property="comments" column="comments" />  
+    <result property="filedata" column="filedata" />  
+     <result column="create_time" property="createTime"/>
+     <result column="modify_time" property="modifyTime"/>
+</resultMap>  
+
+<select id = "getAll" resultMap = "result">
+   select id,filename,serialnum,contractname,contractusage,signedPart,comments,create_time,modify_time from t_zhideContract
+</select>
+<select id = "getFileDataByID" resultMap = "result" parameterType="java.lang.Integer">
+   select  filename,id,filedata from t_zhideContract where id=#{tid}
+</select>
+
+<insert id="insertContractwithEmptyData" parameterType="com.ifarm.console.shared.domain.po.ZhiDeContractPO">  
+    insert into t_zhideContract (filename,serialnum,contractname,contractusage,signedPart,comments,filedata,create_time,modify_time)  
+    values(#{filename},#{serialnum},#{contractname},#{contractusage},#{signedPart},#{comments},#{filedata},#{createTime},#{modifyTime})  
+</insert> 
+
+ <update id="update" parameterType="com.ifarm.console.shared.domain.po.ZhiDeContractPO">
+        update t_zhideContract
+        <set>
+            <if test="serialnum != null">
+                serialnum = #{serialnum},
+            </if>
+            <if test="contractname != null">
+                contractname = #{contractname},
+            </if>
+            <if test="contractusage != null ">
+                contractusage = #{contractusage},
+            </if>
+            <if test="signedPart != null ">
+                signedPart = #{signedPart},
+            </if>
+            <if test="comments != null ">
+                comments = #{comments},
+            </if>
+            
+        </set>
+        <where>
+            <if test="tid != null">
+                 id = #{tid}
+            </if>
+            
+        </where>
+    </update>
+    
+    <update id="updateData" parameterType="com.ifarm.console.shared.domain.po.ZhiDeContractPO">
+        update t_zhideContract
+        <set>
+            <if test="filename != null ">
+                filename = #{filename},
+            </if>
+            <if test="filedata != null ">
+                filedata = #{filedata},
+            </if>
+            <if test="modifyTime != null ">
+                modify_time = #{modifyTime},
+            </if>
+        </set>
+        <where>
+            <if test="tid != null">
+                 id = #{tid}
+            </if>
+            
+        </where>
+    </update>
+	<delete id="deleteContractByID" parameterType="java.lang.Integer">
+        delete from t_zhideContract where id = #{tid}
+    </delete>
+</mapper> 

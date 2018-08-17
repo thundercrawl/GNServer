@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ifarm.console.mapper.KunPengMapper">
+<resultMap id = "result" type = "com.ifarm.console.shared.domain.po.KunPengPO">
+<result property="tid" column="id"/> 
+<result property="kunpengDate" column="kunpengDate"/>
+<result property="city" column="city"/>
+<result property="company" column="company"/>
+<result property="beianpeople" column="beianpeople"/>
+<result property="passedpeople" column="passedpeople"/>
+<result property="ordertime" column="ordertime"/>
+<result property="finishtime" column="finishtime"/>
+<result property="finishpeople" column="finishpeople"/>
+<result property="fundsum" column="fundsum"/>
+     <result column="create_time" property="createTime"/>
+     <result column="modify_time" property="modifyTime"/>
+</resultMap>  
+
+<resultMap id = "cityResult" type = "com.ifarm.console.shared.domain.po.KunPengCityPO">
+<result property="tid" column="id"/>     
+    <result property="city" column="city"/>  
+    <result property="province" column="province" />  
+     <result column="create_time" property="createTime"/>
+     <result column="modify_time" property="modifyTime"/>
+</resultMap> 
+
+<resultMap id = "companyResult" type = "com.ifarm.console.shared.domain.po.KunPengCompanyPO">
+<result property="tid" column="id"/>     
+    <result property="company" column="company"/>  
+     <result column="create_time" property="createTime"/>
+     <result column="modify_time" property="modifyTime"/>
+</resultMap>  
+
+<resultMap id = "cartypeResult" type = "com.ifarm.console.shared.domain.po.KunPengCartypePO">
+<result property="tid" column="id"/>     
+    <result property="cartype" column="cartype"/>  
+    <result property="carsalingprice" column="carsalingprice"/>
+    <result property="carinvoiceprice" column="carinvoiceprice"/>
+    <result property="carinsurance" column="carinsurance"/>
+    <result property="investsum" column="investsum"/>
+     <result column="create_time" property="createTime"/>
+     <result column="modify_time" property="modifyTime"/>
+</resultMap> 
+
+
+<select id = "getKunPengByMonth" parameterType = "java.lang.String" resultMap = "result">
+   select * from t_kunpeng where kunpengDate between #{t1} and #{t2}
+</select>
+<select id = "getKunPengCityAll"  resultMap = "cityResult">
+   select * from t_kunpengCity
+</select>
+
+<insert id="insertKunPengCity" parameterType="com.ifarm.console.shared.domain.po.KunPengCityPO">  
+    insert into t_kunpengCity (city,province,create_time,modify_time)  
+    values(#{city},#{province},#{createTime},#{modifyTime})  
+</insert> 
+
+<select id = "getKunPengCompanyAll"  resultMap = "companyResult">
+   select * from t_kunpengCompany
+</select>
+
+<insert id="insertKunPengCompany" parameterType="com.ifarm.console.shared.domain.po.KunPengCompanyPO">  
+    insert into t_kunpengCompany (company,create_time,modify_time)  
+    values(#{company},#{createTime},#{modifyTime})  
+</insert> 
+
+<select id = "getKunPengCartypeAll"  resultMap = "cartypeResult">
+   select * from t_kunpengCartype
+</select>
+
+<insert id="insertKunPengCartype" parameterType="com.ifarm.console.shared.domain.po.KunPengCartypePO">  
+    insert into t_kunpengCartype (cartype,carsalingprice,carinvoiceprice,carinsurance,investsum,create_time,modify_time)  
+    values(#{cartype},#{carsalingprice},#{carinvoiceprice},#{carinsurance},#{investsum},#{createTime},#{modifyTime})  
+</insert> 
+
+
+<insert id="insert" parameterType="com.ifarm.console.shared.domain.po.KunPengPO">  
+    insert into t_kunpeng (kunpengDate,city,company,cartype,beianpeople,passedpeople,ordertime,finishtime,finishpeople,fundsum,create_time,modify_time)  
+    values(#{kunpengDate},#{city},#{company},#{cartype},#{beianpeople},#{passedpeople},#{ordertime},#{finishtime},#{finishpeople},#{fundsum},#{createTime},#{modifyTime})  
+</insert> 
+
+<select id = "list"  resultMap = "result">
+   select * from t_kunpeng
+</select>
+
+ <update id="update" parameterType="com.ifarm.console.shared.domain.po.KunPengPO">
+        update t_kunpeng
+        <set>
+        <if test="kunpengDate != null">
+                kunpengDate = #{kunpengDate},
+            </if>
+            <if test="city != null">
+                city = #{city},
+            </if>
+            <if test="company != null">
+                company = #{company},
+            </if>
+            <if test="cartype != null ">
+                cartype = #{cartype},
+            </if>
+            <if test="beianpeople != null ">
+                beianpeople = #{beianpeople},
+            </if>
+            <if test="passedpeople != null ">
+                passedpeople = #{passedpeople},
+            </if>
+             
+             <if test="ordertime != null ">
+                ordertime = #{ordertime},
+            </if>
+             <if test="finishtime != null ">
+                finishtime = #{finishtime},
+            </if>
+            <if test="finishpeople != null ">
+                finishpeople = #{finishpeople},
+            </if>
+            <if test="fundsum != null ">
+                fundsum = #{fundsum},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="modifyTime != null">
+                modify_time = #{modifyTime},
+            </if>
+        </set>
+        <where>
+            <if test="tid != null">
+                 id = #{tid}
+            </if>
+            
+        </where>
+    </update>
+    
+    <update id="updateData" parameterType="com.ifarm.console.shared.domain.po.ZhiDeContractPO">
+        update t_zhideContract
+        <set>
+            <if test="filename != null ">
+                filename = #{filename},
+            </if>
+            <if test="filedata != null ">
+                filedata = #{filedata},
+            </if>
+            <if test="modifyTime != null ">
+                modify_time = #{modifyTime},
+            </if>
+        </set>
+        <where>
+            <if test="tid != null">
+                 id = #{tid}
+            </if>
+            
+        </where>
+    </update>
+	<delete id="deleteByID" parameterType="java.lang.Integer">
+        delete from t_kunpeng where id = #{tid}
+    </delete>
+    
+    
+</mapper> 

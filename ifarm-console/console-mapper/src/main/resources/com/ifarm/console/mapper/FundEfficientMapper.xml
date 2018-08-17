@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ifarm.console.mapper.FundEfficientMapper">
+<resultMap id = "result" type = "com.ifarm.console.shared.domain.po.FundEfficientPO">
+   <result property = "tid" column = "id"/>
+   <result property = "fundDate" column = "fundDate"/>
+   <result property = "fundSource" column = "fundSource"/>
+   <result property = "fundSum" column = "fundSum"/>
+   <result property = "fundUsage" column = "fundUsage"/>
+   <result property = "monthlyFundSum" column = "monthlyFundSum"/>
+   <result property = "alreadyLentFundSum" column = "alreadyLentFundSum"/>
+   <result property = "leftFundSum" column = "leftFundSum"/>
+   <result property = "createTime" column = "create_time"/>
+   <result property = "modifyTime" column = "modify_time"/>
+
+</resultMap>
+
+
+<resultMap id = "resultCompany" type = "com.ifarm.console.shared.domain.po.FundEfficientCompanyPO">
+<result property = "tid" column = "id"/> 
+<result property = "company" column = "company"/> 
+   <result property = "createTime" column = "create_time"/>
+   <result property = "modifyTime" column = "modify_time"/>
+</resultMap>
+<select id = "getAll" resultMap = "result">
+   select * from t_fundefficient
+</select>
+
+<select id = "getByMonth" parameterType = "java.lang.String" resultMap = "result">
+   select * from t_fundefficient where fundDate between #{t1} and #{t2}
+</select>
+
+<select id = "listCompany"  resultMap = "resultCompany">
+   select * from t_fundefficientcompany
+</select>
+
+ <update id="update" parameterType="com.ifarm.console.shared.domain.po.FundEfficientPO">
+        update t_fundefficient
+        <set>
+            <if test="fundDate != null">
+                fundDate = #{fundDate},
+            </if>
+            <if test="fundSource != null">
+                fundSource = #{fundSource},
+            </if>
+            <if test="fundSum != null ">
+                fundSum = #{fundSum},
+            </if>
+            <if test="fundUsage != null ">
+                fundUsage = #{fundUsage},
+            </if>
+            <if test="monthlyFundSum != null ">
+                monthlyFundSum = #{monthlyFundSum},
+            </if>
+             
+             <if test="alreadyLentFundSum != null ">
+                alreadyLentFundSum = #{alreadyLentFundSum},
+            </if>
+             <if test="leftFundSum != null ">
+                leftFundSum = #{leftFundSum},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="modifyTime != null">
+                modify_time = #{modifyTime},
+            </if>
+            
+        </set>
+        <where>
+            <if test="tid != null">
+                 id = #{tid}
+            </if>
+            
+        </where>
+    </update>
+<insert id = "insert" parameterType="com.ifarm.console.shared.domain.po.FundEfficientPO">
+   insert into  t_fundefficient(fundDate,fundSource,fundSum,fundUsage,monthlyFundSum,alreadyLentFundSum,leftFundSum,create_time,modify_time) 
+   values(#{fundDate},#{fundSource},#{fundSum},#{fundUsage},#{monthlyFundSum},#{alreadyLentFundSum},#{leftFundSum},#{createTime},#{modifyTime})
+</insert>
+ 
+ <insert id = "insertCompany" parameterType="com.ifarm.console.shared.domain.po.FundEfficientCompanyPO">
+   insert into   t_fundefficientcompany(company,create_time,modify_time) 
+   values(#{company},#{createTime},#{modifyTime})
+</insert>
+
+ 
+<delete id="delete" parameterType="java.lang.Integer">
+        delete from t_fundefficient where id = #{tid}
+    </delete>
+    
+</mapper>
