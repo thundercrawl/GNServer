@@ -14,7 +14,11 @@ public class KunPengPO extends BasePO {
 	private Date finishtime;
 	private Integer finishpeople;
 	private Integer fundsum;
-
+	private String carsalingprice;
+	private String carinvoiceprice;
+	private String carinsurance;
+	private String investsum;
+	
     /**
      * @return String return the city
      */
@@ -154,6 +158,63 @@ public class KunPengPO extends BasePO {
      */
     public void setKunpengDate(Date kunpengDate) {
         this.kunpengDate = kunpengDate;
+    }
+
+
+    /**
+     * @return String return the carsalingprice
+     */
+    public String getCarsalingprice() {
+        return carsalingprice;
+    }
+
+    /**
+     * @param carsalingprice the carsalingprice to set
+     */
+    public void setCarsalingprice(String carsalingprice) {
+        this.carsalingprice = carsalingprice;
+    }
+
+    /**
+     * @return String return the carinvoiceprice
+     */
+    public String getCarinvoiceprice() {
+        return carinvoiceprice;
+    }
+
+    /**
+     * @param carinvoiceprice the carinvoiceprice to set
+     */
+    public void setCarinvoiceprice(String carinvoiceprice) {
+        this.carinvoiceprice = carinvoiceprice;
+    }
+
+    /**
+     * @return String return the carinsurance
+     */
+    public String getCarinsurance() {
+        return carinsurance;
+    }
+
+    /**
+     * @param carinsurance the carinsurance to set
+     */
+    public void setCarinsurance(String carinsurance) {
+        this.carinsurance = carinsurance;
+    }
+
+    /**
+     * @return String return the investsum
+     */
+    public String getInvestsum() {
+        return investsum;
+    }
+
+    /**
+     * @param investsum the investsum to set
+     */
+    public void setInvestsum(String investsum) {
+        this.investsum = investsum;
     }
 
 }

@@ -6,6 +6,10 @@
 <result property="kunpengDate" column="kunpengDate"/>
 <result property="city" column="city"/>
 <result property="company" column="company"/>
+  <result property="carsalingprice" column="carsalingprice"/>
+   <result property="carinvoiceprice" column="carinvoiceprice"/>
+   <result property="carinsurance" column="carinsurance"/>
+   <result property="investsum" column="investsum"/>
 <result property="beianpeople" column="beianpeople"/>
 <result property="passedpeople" column="passedpeople"/>
 <result property="ordertime" column="ordertime"/>
@@ -75,13 +79,80 @@
 
 
 <insert id="insert" parameterType="com.ifarm.console.shared.domain.po.KunPengPO">  
-    insert into t_kunpeng (kunpengDate,city,company,cartype,beianpeople,passedpeople,ordertime,finishtime,finishpeople,fundsum,create_time,modify_time)  
-    values(#{kunpengDate},#{city},#{company},#{cartype},#{beianpeople},#{passedpeople},#{ordertime},#{finishtime},#{finishpeople},#{fundsum},#{createTime},#{modifyTime})  
+    insert into t_kunpeng (kunpengDate,city,company,cartype,carsalingprice,carinvoiceprice,carinsurance,investsum,beianpeople,passedpeople,ordertime,finishtime,finishpeople,fundsum,create_time,modify_time)  
+    values(#{kunpengDate},#{city},#{company},#{cartype},#{carsalingprice},#{carinvoiceprice},#{carinsurance},#{investsum},#{beianpeople},#{passedpeople},#{ordertime},#{finishtime},#{finishpeople},#{fundsum},#{createTime},#{modifyTime})  
 </insert> 
 
 <select id = "list"  resultMap = "result">
    select * from t_kunpeng
 </select>
+<update id="updateCity" parameterType="com.ifarm.console.shared.domain.po.KunPengCityPO">
+update t_kunpengCity
+ <set>
+      
+            <if test="city != null">
+                city = #{city},
+            </if>
+             <if test="province != null">
+                city = #{province},
+            </if>
+               <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="modifyTime != null">
+                modify_time = #{modifyTime},
+            </if>
+        </set>
+        <where>
+            <if test="tid != null">
+                 id = #{tid}
+            </if>
+            </where>
+</update>
+
+<update id="updateCompany" parameterType="com.ifarm.console.shared.domain.po.KunPengCompanyPO">
+update t_kunpengCompany
+ <set>
+      
+            <if test="company != null">
+                company = #{company},
+            </if>
+       
+               <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="modifyTime != null">
+                modify_time = #{modifyTime},
+            </if>
+        </set>
+        <where>
+            <if test="tid != null">
+                 id = #{tid}
+            </if>
+            </where>
+</update>
+
+<update id="updateCartype" parameterType="com.ifarm.console.shared.domain.po.KunPengCartypePO">
+update t_kunpengCartype
+ <set>
+      
+            <if test="cartype != null">
+                cartype = #{cartype},
+            </if>
+       
+               <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="modifyTime != null">
+                modify_time = #{modifyTime},
+            </if>
+        </set>
+        <where>
+            <if test="tid != null">
+                 id = #{tid}
+            </if>
+            </where>
+</update>
 
  <update id="update" parameterType="com.ifarm.console.shared.domain.po.KunPengPO">
         update t_kunpeng
@@ -97,6 +168,18 @@
             </if>
             <if test="cartype != null ">
                 cartype = #{cartype},
+            </if>
+            <if test="carsalingprice != null ">
+                cartype = #{carsalingprice},
+            </if>
+            <if test="carinvoiceprice != null ">
+                cartype = #{carinvoiceprice},
+            </if>
+            <if test="carinsurance != null ">
+                cartype = #{carinsurance},
+            </if>
+            <if test="investsum != null ">
+                cartype = #{investsum},
             </if>
             <if test="beianpeople != null ">
                 beianpeople = #{beianpeople},
@@ -152,8 +235,22 @@
             
         </where>
     </update>
+	
+	
 	<delete id="deleteByID" parameterType="java.lang.Integer">
         delete from t_kunpeng where id = #{tid}
+    </delete>
+    
+    <delete id="deleteCityByID" parameterType="java.lang.Integer">
+        delete from t_kunpengCity where id = #{tid}
+    </delete>
+    
+       <delete id="deleteCompanyByID" parameterType="java.lang.Integer">
+        delete from t_kunpengCompany where id = #{tid}
+    </delete>
+    
+       <delete id="deleteCartypeByID" parameterType="java.lang.Integer">
+        delete from t_kunpengCartype where id = #{tid}
     </delete>
     
     

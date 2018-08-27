@@ -14,6 +14,7 @@ import com.ifarm.console.facade.service.IFundEfficientService;
 import com.ifarm.console.mapper.ContentMapper;
 import com.ifarm.console.mapper.FundEfficientMapper;
 import com.ifarm.console.shared.domain.po.FundEfficientCompanyPO;
+import com.ifarm.console.shared.domain.po.FundEfficientFundUsagePO;
 import com.ifarm.console.shared.domain.po.FundEfficientPO;
 
 
@@ -84,6 +85,42 @@ public class FundEfficientServiceImpl  implements IFundEfficientService {
 	public List<FundEfficientCompanyPO> listCompany() {
 		// TODO Auto-generated method stub
 		return fmaper.listCompany();
+	}
+
+	@Override
+	public int deleteCompany(Integer id) {
+		// TODO Auto-generated method stub
+		return fmaper.deleteCompany(id);
+	}
+
+	@Override
+	public void updateCompany(FundEfficientCompanyPO po) {
+		// TODO Auto-generated method stub
+		 fmaper.updateCompany(po);
+	}
+
+	@Override
+	public int insertFundUsage(FundEfficientFundUsagePO po) {
+		// TODO Auto-generated method stub
+		return fmaper.insertFundUsage(po);
+	}
+
+	@Override
+	public List<FundEfficientFundUsagePO> listFundUsage() {
+		// TODO Auto-generated method stub
+		return fmaper.listFundUsage();
+	}
+
+	@Override
+	public int deleteFundUsage(Integer id) {
+		// TODO Auto-generated method stub
+		return fmaper.deleteFundUsage(id);
+	}
+
+	@Override
+	public void updateFundUsage(FundEfficientFundUsagePO po) {
+		// TODO Auto-generated method stub
+		fmaper.updateFundUsage(po);
 	}
 	
 	

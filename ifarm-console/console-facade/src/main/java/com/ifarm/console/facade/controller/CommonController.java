@@ -152,6 +152,10 @@ public class CommonController extends AbstractController {
 		    		  rowItem.add(tmpPO.getCity());
 		    		  rowItem.add(tmpPO.getCompany());
 		    		  rowItem.add(tmpPO.getCartype());
+		    		  rowItem.add(tmpPO.getCarsalingprice());
+		    		  rowItem.add(tmpPO.getCarinvoiceprice());
+		    		  rowItem.add(tmpPO.getCarinsurance());
+		    		  rowItem.add(tmpPO.getInvestsum());
 		    		  rowItem.add(tmpPO.getBeianpeople().toString());
 		    		  rowItem.add(tmpPO.getPassedpeople().toString());
 		    		  rowItem.add(DateTimeUtil.getLocaldate(tmpPO.getOrdertime())) ;
@@ -394,6 +398,7 @@ public class CommonController extends AbstractController {
 	            {
 	               os.close();
 	               is.close();
+	               FileUtils.deletFile(filename);
 	            }
 	         }
 	      };
@@ -435,6 +440,8 @@ public class CommonController extends AbstractController {
 	         fundService.insertByList(values);
 	         else if(name.equals("kunpeng"))
 	        	 kunpengService.insertByList(values);
+	         else if(name.equals("dingsheng"))
+	        	 dingshengService.insertByList(values);
 	        	 
 	      }
 		else

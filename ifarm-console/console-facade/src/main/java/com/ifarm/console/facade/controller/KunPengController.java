@@ -135,6 +135,23 @@ public class KunPengController extends AbstractController {
 		  return responseVO;
 	  }
 	  
+	  @RequestMapping("/city/update")
+	    public ResponseVO updateCity(@RequestBody KunPengCityPO po) {
+	        ResponseVO responseVO = returnSuccess();
+	        try {
+		 
+		  po.setModifyTime(new Date());
+		  kunpengservice.updateCity(po);
+	        }
+	        catch(Exception e)
+	        {
+	        	e.printStackTrace();
+	        	responseVO = this.returnError();
+	        	responseVO.setMessage(e.getMessage());
+	        }
+		  return responseVO;
+	  }
+	  
 	  @RequestMapping("/city/list")
 	    public ResponseVO listCity() {
 	        ResponseVO responseVO = returnSuccess();
@@ -142,6 +159,21 @@ public class KunPengController extends AbstractController {
 		  
 		    List<KunPengCityPO>  pos = kunpengservice.getKunPengCityAll();
 		    responseVO.setResult(pos);
+	        }
+	        catch(Exception e)
+	        {
+	        	e.printStackTrace();
+	        	responseVO = this.returnError();
+	        	responseVO.setMessage(e.getMessage());
+	        }
+		  return responseVO;
+	  }
+	  @RequestMapping("/city/delete")
+	    public ResponseVO deleteCity(@RequestBody KunPengCityPO po) {
+	        ResponseVO responseVO = returnSuccess();
+	        try {
+		  
+	        	kunpengservice.deleteCityByID(po.getTid());
 	        }
 	        catch(Exception e)
 	        {
@@ -185,6 +217,38 @@ public class KunPengController extends AbstractController {
 		  return responseVO;
 	  }
 	  
+	  @RequestMapping("/company/update")
+	    public ResponseVO updateCompany(@RequestBody KunPengCompanyPO po) {
+	        ResponseVO responseVO = returnSuccess();
+	        try {
+		 
+		  po.setModifyTime(new Date());
+		  kunpengservice.updateCompany(po);
+	        }
+	        catch(Exception e)
+	        {
+	        	e.printStackTrace();
+	        	responseVO = this.returnError();
+	        	responseVO.setMessage(e.getMessage());
+	        }
+		  return responseVO;
+	  }
+	  
+	  @RequestMapping("/company/delete")
+	    public ResponseVO deleteCity(@RequestBody KunPengCompanyPO po) {
+	        ResponseVO responseVO = returnSuccess();
+	        try {
+		  
+	        	kunpengservice.deleteCompanyByID(po.getTid());
+	        }
+	        catch(Exception e)
+	        {
+	        	e.printStackTrace();
+	        	responseVO = this.returnError();
+	        	responseVO.setMessage(e.getMessage());
+	        }
+		  return responseVO;
+	  }
 	  @RequestMapping("/cartype/insert")
 	    public ResponseVO insertCartype(@RequestBody KunPengCartypePO po) {
 	        ResponseVO responseVO = returnSuccess();
@@ -210,6 +274,39 @@ public class KunPengController extends AbstractController {
 		  
 		    List<KunPengCartypePO>  pos = kunpengservice.getKunPengCartypeAll();
 		    responseVO.setResult(pos);
+	        }
+	        catch(Exception e)
+	        {
+	        	e.printStackTrace();
+	        	responseVO = this.returnError();
+	        	responseVO.setMessage(e.getMessage());
+	        }
+		  return responseVO;
+	  }
+	  
+	  @RequestMapping("/cartype/update")
+	    public ResponseVO updateCompany(@RequestBody KunPengCartypePO po) {
+	        ResponseVO responseVO = returnSuccess();
+	        try {
+		 
+		  po.setModifyTime(new Date());
+		  kunpengservice.updateCartype(po);
+	        }
+	        catch(Exception e)
+	        {
+	        	e.printStackTrace();
+	        	responseVO = this.returnError();
+	        	responseVO.setMessage(e.getMessage());
+	        }
+		  return responseVO;
+	  }
+	  
+	  @RequestMapping("/cartype/delete")
+	    public ResponseVO deleteCity(@RequestBody KunPengCartypePO po) {
+	        ResponseVO responseVO = returnSuccess();
+	        try {
+		  
+	        	kunpengservice.deleteCartypeByID(po.getTid());
 	        }
 	        catch(Exception e)
 	        {

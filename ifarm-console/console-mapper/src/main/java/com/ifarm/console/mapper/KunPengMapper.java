@@ -16,12 +16,19 @@ public interface KunPengMapper {
 	
 	List<KunPengCityPO> getKunPengCityAll();
 	int insertKunPengCity(KunPengCityPO po);
+	int updateCity(KunPengCityPO po);
+	int deleteCityByID(Integer id);
 	
 	List<KunPengCompanyPO> getKunPengCompanyAll(); 
 	int insertKunPengCompany(KunPengCompanyPO po);
+	int updateCompany(KunPengCompanyPO po);
+	int deleteCompanyByID(Integer id);
 	
 	List<KunPengCartypePO> getKunPengCartypeAll(); 
 	int insertKunPengCartype(KunPengCartypePO po);
+	int updateCartype(KunPengCartypePO po);
+	int deleteCartypeByID(Integer id);
+	
 	
 	List<KunPengPO> getKunPengByMonth(@Param("t1")String t1,@Param("t2")String t2);
 	List<KunPengPO> list(); 

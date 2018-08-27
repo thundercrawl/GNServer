@@ -22,6 +22,13 @@
    <result property = "createTime" column = "create_time"/>
    <result property = "modifyTime" column = "modify_time"/>
 </resultMap>
+<resultMap id = "resultFundUsage" type = "com.ifarm.console.shared.domain.po.FundEfficientFundUsagePO">
+<result property = "tid" column = "id"/> 
+<result property = "fundUsage" column = "fundUsage"/> 
+   <result property = "createTime" column = "create_time"/>
+   <result property = "modifyTime" column = "modify_time"/>
+</resultMap>
+
 <select id = "getAll" resultMap = "result">
    select * from t_fundefficient
 </select>
@@ -33,6 +40,41 @@
 <select id = "listCompany"  resultMap = "resultCompany">
    select * from t_fundefficientcompany
 </select>
+<select id = "listFundUsage"  resultMap = "resultFundUsage">
+   select * from t_fundefficientfundusage
+</select>
+
+<update id="updateCompany" parameterType="com.ifarm.console.shared.domain.po.FundEfficientCompanyPO">
+        update t_fundefficientcompany
+        <set>
+            <if test="company != null">
+                company = #{company},
+            </if>
+           
+</set>
+ <where>
+            <if test="tid != null">
+                 id = #{tid}
+            </if>
+            
+        </where>
+</update>
+
+<update id="updateFundUsage" parameterType="com.ifarm.console.shared.domain.po.FundEfficientFundUsagePO">
+        update t_fundefficientfundusage
+        <set>
+            <if test="fundUsage != null">
+                fundUsage = #{fundUsage},
+            </if>
+           
+</set>
+ <where>
+            <if test="tid != null">
+                 id = #{tid}
+            </if>
+            
+        </where>
+</update>
 
  <update id="update" parameterType="com.ifarm.console.shared.domain.po.FundEfficientPO">
         update t_fundefficient
@@ -84,6 +126,17 @@
    values(#{company},#{createTime},#{modifyTime})
 </insert>
 
+  <insert id = "insertFundUsage" parameterType="com.ifarm.console.shared.domain.po.FundEfficientFundUsagePO">
+   insert into   t_fundefficientfundusage(fundUsage,create_time,modify_time) 
+   values(#{fundUsage},#{createTime},#{modifyTime})
+</insert>
+ <delete id="deleteCompany" parameterType="java.lang.Integer">
+        delete from t_fundefficientfundusage where id = #{tid}
+    </delete>
+    
+     <delete id="deleteFundUsage" parameterType="java.lang.Integer">
+        delete from t_fundefficientfundusage where id = #{tid}
+    </delete>
  
 <delete id="delete" parameterType="java.lang.Integer">
         delete from t_fundefficient where id = #{tid}

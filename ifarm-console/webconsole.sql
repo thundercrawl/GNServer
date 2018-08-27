@@ -88,6 +88,10 @@ CREATE TABLE `t_dingsheng`  (
   `city` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci ,
   `company` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `cartype` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `carsalingprice` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci,
+  `carinvoiceprice` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci,
+  `carinsurance` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci,
+  `investsum`	varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci,
   `beianpeople` integer,
   `passedpeople` integer,
   `ordertime` datetime(0) NOT NULL,
@@ -150,6 +154,10 @@ CREATE TABLE `t_kunpeng`  (
   `city` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci ,
   `company` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `cartype` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `carsalingprice` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci,
+  `carinvoiceprice` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci,
+  `carinsurance` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci,
+  `investsum`	varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci,
   `beianpeople` integer,
   `passedpeople` integer,
   `ordertime` datetime(0) NOT NULL,
@@ -179,6 +187,18 @@ CREATE TABLE `t_zhideContract`  (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
+
+-- ----------------------------
+-- Table structure for t_fundefficientcompany
+-- ----------------------------
+DROP TABLE IF EXISTS `t_fundefficientfundusage`;
+CREATE TABLE `t_fundefficientfundusage`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `fundUsage` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci ,
+  `create_time` datetime(0) NULL DEFAULT NULL,
+  `modify_time` datetime(0) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_fundefficientcompany
@@ -270,10 +290,10 @@ INSERT INTO `t_console_permission` VALUES (3021, 302, '/kunpengBussiness/read', 
 INSERT INTO `t_console_permission` VALUES (3022, 302, '/kunpengBussiness/edit', '编辑', 1, '2018-05-11 23:33:23');
 INSERT INTO `t_console_permission` VALUES (3023, 302, '/kunpengBussiness/excelI', 'Excel导入', 1, '2018-05-11 23:33:23');
 INSERT INTO `t_console_permission` VALUES (3024, 302, '/kunpengBussiness/excelE', 'Excel导出', 1, '2018-05-11 23:33:23');
-INSERT INTO `t_console_permission` VALUES (3031, 303, '/xinshengBussiness/read', '查询', 1, '2018-05-11 23:33:23');
-INSERT INTO `t_console_permission` VALUES (3032, 303, '/xinshengBussiness/edit', '编辑', 1, '2018-05-11 23:33:23');
-INSERT INTO `t_console_permission` VALUES (3033, 303, '/xinshengBussiness/excelI', 'Excel导入', 1, '2018-05-11 23:33:23');
-INSERT INTO `t_console_permission` VALUES (3034, 303, '/xinshengBussiness/excelE', 'Excel导出', 1, '2018-05-11 23:33:23');
+INSERT INTO `t_console_permission` VALUES (3031, 303, '/dingshengBussiness/read', '查询', 1, '2018-05-11 23:33:23');
+INSERT INTO `t_console_permission` VALUES (3032, 303, '/dingshengBussiness/edit', '编辑', 1, '2018-05-11 23:33:23');
+INSERT INTO `t_console_permission` VALUES (3033, 303, '/dingshengBussiness/excelI', 'Excel导入', 1, '2018-05-11 23:33:23');
+INSERT INTO `t_console_permission` VALUES (3034, 303, '/dingshengBussiness/excelE', 'Excel导出', 1, '2018-05-11 23:33:23');
 INSERT INTO `t_console_permission` VALUES (3041, 304, '/zhideContractDownload/read', '查询', 1, '2018-05-11 23:33:23');
 INSERT INTO `t_console_permission` VALUES (3042, 304, '/zhideContractDownload/edit', '编辑', 1, '2018-05-11 23:33:23');
 INSERT INTO `t_console_permission` VALUES (3043, 304, '/zhideContractDownload/excelI', 'Excel导入', 1, '2018-05-11 23:33:23');

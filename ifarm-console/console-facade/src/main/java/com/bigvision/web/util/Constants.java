@@ -50,6 +50,10 @@ public class Constants {
 		cols.add("城市");
 		cols.add("公司");
 		cols.add("车型");
+		cols.add("车辆指导价");
+		cols.add("车辆开票价");
+		cols.add("保险");
+		cols.add("融资额");
 		cols.add("备案人数");
 		cols.add("过审人数");
 		cols.add("下单时间");

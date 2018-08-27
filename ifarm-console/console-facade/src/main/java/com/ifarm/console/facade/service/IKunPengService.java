@@ -13,14 +13,25 @@ public interface IKunPengService {
 
 
 	void insertByList(List<List<String>>values) throws ParseException;
+	
+	
 	List<KunPengCityPO> getKunPengCityAll();
 	int insertKunPengCity(KunPengCityPO po);
+	int updateCity(KunPengCityPO po);
+	int deleteCityByID(Integer id);
+	
 	
 	List<KunPengCompanyPO> getKunPengCompanyAll(); 
 	int insertKunPengCompany(KunPengCompanyPO po);
+	int updateCompany(KunPengCompanyPO po);
+	int deleteCompanyByID(Integer id);
+	
 	
 	List<KunPengCartypePO> getKunPengCartypeAll(); 
 	int insertKunPengCartype(KunPengCartypePO po);
+	int updateCartype(KunPengCartypePO po);
+	int deleteCartypeByID(Integer id);
+	
 	
 	List<KunPengPO> list(); 
 	int update(KunPengPO po);

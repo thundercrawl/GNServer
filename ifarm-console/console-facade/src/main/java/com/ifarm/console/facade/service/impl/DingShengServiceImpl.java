@@ -104,12 +104,16 @@ public class DingShengServiceImpl implements IDingShengService {
 					po.setCity(item.get(1));
 					po.setCompany(item.get(2));
 					po.setCartype(item.get(3));
-					po.setBeianpeople(new Integer(item.get(4)));
-					po.setPassedpeople(new Integer(item.get(5)));
-					po.setOrdertime(DateTimeUtil.getDateByString((String)item.get(6)));
-					po.setFinishtime(DateTimeUtil.getDateByString((String)item.get(7)));
-					po.setFinishpeople(new Integer(item.get(8)));
-					po.setFundsum(new Integer(item.get(9)));
+					po.setCarsalingprice(item.get(4));
+					po.setCarinvoiceprice(item.get(5));
+					po.setCarinsurance(item.get(6));
+					po.setInvestsum(item.get(7));
+					po.setBeianpeople(new Integer(item.get(8)));
+					po.setPassedpeople(new Integer(item.get(9)));
+					po.setOrdertime(DateTimeUtil.getDateByString((String)item.get(10)));
+					po.setFinishtime(DateTimeUtil.getDateByString((String)item.get(11)));
+					po.setFinishpeople(new Integer(item.get(12)));
+					po.setFundsum(new Integer(item.get(13)));
 					
 					po.setModifyTime(new Date());
 					po.setCreateTime(new Date());
@@ -117,5 +121,44 @@ public class DingShengServiceImpl implements IDingShengService {
 					kunpengmapper.insert(po);
 				}
 	}
+
+	@Override
+	public int updateCity(KunPengCityPO po) {
+		// TODO Auto-generated method stub
+		return kunpengmapper.updateCity(po);
+	}
+
+	@Override
+	public int deleteCityByID(Integer id) {
+		// TODO Auto-generated method stub
+		return kunpengmapper.deleteCityByID(id);
+	}
+
+	@Override
+	public int updateCompany(KunPengCompanyPO po) {
+		// TODO Auto-generated method stub
+		return kunpengmapper.updateCompany(po);
+	}
+
+	@Override
+	public int deleteCompanyByID(Integer id) {
+		// TODO Auto-generated method stub
+		return kunpengmapper.deleteCompanyByID(id);
+	}
+
+
+	@Override
+	public int deleteCartypeByID(Integer id) {
+		// TODO Auto-generated method stub
+		return kunpengmapper.deleteCartypeByID(id);
+	}
+
+	@Override
+	public int updateCartype(KunPengCartypePO po) {
+		// TODO Auto-generated method stub
+		return kunpengmapper.updateCartype(po);
+	}
+
+
 
 }

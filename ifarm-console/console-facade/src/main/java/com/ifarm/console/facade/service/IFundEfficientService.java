@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.util.List;
 
 import com.ifarm.console.shared.domain.po.FundEfficientCompanyPO;
+import com.ifarm.console.shared.domain.po.FundEfficientFundUsagePO;
 import com.ifarm.console.shared.domain.po.FundEfficientPO;
 
 public interface IFundEfficientService {
@@ -17,4 +18,12 @@ public interface IFundEfficientService {
 	
 	int insertCompany(FundEfficientCompanyPO po);
 	List<FundEfficientCompanyPO> listCompany();
+	int deleteCompany(Integer id);
+	void updateCompany(FundEfficientCompanyPO po);
+	
+	
+	int insertFundUsage(FundEfficientFundUsagePO po);
+	List<FundEfficientFundUsagePO> listFundUsage();
+	int deleteFundUsage(Integer id);
+	void updateFundUsage(FundEfficientFundUsagePO po);
 }

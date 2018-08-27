@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ifarm.console.facade.service.IFundEfficientService;
 import com.ifarm.console.shared.domain.po.FundEfficientCompanyPO;
+import com.ifarm.console.shared.domain.po.FundEfficientFundUsagePO;
 import com.ifarm.console.shared.domain.po.FundEfficientPO;
 import com.ifarm.console.shared.domain.po.KunPengPO;
 import com.ifarm.console.shared.domain.vo.ResponseVO;
@@ -146,4 +147,109 @@ public class FundEfficientController extends AbstractController {
 	        }
 	        return responseVO;
 	 }
+	 @RequestMapping("/company/delete")
+		public ResponseVO deleteCompany(@RequestBody FundEfficientCompanyPO po)
+		{  ResponseVO responseVO = returnSuccess();
+			try  
+			{ 
+				fundService.deleteCompany(po.getTid());
+			}  
+			 catch(Exception e)
+	        {
+	        	e.printStackTrace();
+	        	responseVO = this.returnError();
+	        	responseVO.setMessage(e.getMessage());
+	        }
+			return responseVO;
+			
+		}
+	 
+	 @RequestMapping("/company/update")
+		public ResponseVO update(@RequestBody FundEfficientCompanyPO po)
+		{  ResponseVO responseVO = returnSuccess();
+			try  
+			{ 
+				po.setModifyTime(new Date());
+				fundService.updateCompany(po);
+			}  
+			 catch(Exception e)
+	        {
+	        	e.printStackTrace();
+	        	responseVO = this.returnError();
+	        	responseVO.setMessage(e.getMessage());
+	        }
+			return responseVO;
+			
+		}
+	 
+	 @RequestMapping("/fundUsage/insert")
+		public ResponseVO insertFundUsage(@RequestBody FundEfficientFundUsagePO po)
+		
+		{  ResponseVO responseVO = returnSuccess();
+			try  
+			{  
+				po.setCreateTime(new Date());
+				po.setModifyTime(new Date());
+				fundService.insertFundUsage(po);
+			}  
+			 catch(Exception e)
+	        {
+	        	e.printStackTrace();
+	        	responseVO = this.returnError();
+	        	responseVO.setMessage(e.getMessage());
+	        }
+			return responseVO;
+			
+		}
+	 
+	 @RequestMapping("/fundUsage/list")
+	    public ResponseVO listFundUsageALL() {
+		 
+		 ResponseVO responseVO = returnSuccess();
+		 
+		 try {
+	            List<FundEfficientFundUsagePO> fundList = fundService.listFundUsage();
+	       
+	            responseVO.setResult(fundList);
+	          
+	        } catch (Exception e) {
+	            logger.error("", e);
+	            return returnError(e.getMessage());
+	        }
+	        return responseVO;
+	 }
+	 @RequestMapping("/fundUsage/delete")
+		public ResponseVO deleteFundUsage(@RequestBody FundEfficientFundUsagePO po)
+		{  ResponseVO responseVO = returnSuccess();
+			try  
+			{ 
+				fundService.deleteFundUsage(po.getTid());
+			}  
+			 catch(Exception e)
+	        {
+	        	e.printStackTrace();
+	        	responseVO = this.returnError();
+	        	responseVO.setMessage(e.getMessage());
+	        }
+			return responseVO;
+			
+		}
+	 
+	 @RequestMapping("/fundUsage/update")
+		public ResponseVO updateFundUsage(@RequestBody FundEfficientFundUsagePO po)
+		{  ResponseVO responseVO = returnSuccess();
+			try  
+			{ 
+				po.setModifyTime(new Date());
+				fundService.updateFundUsage(po);
+			}  
+			 catch(Exception e)
+	        {
+	        	e.printStackTrace();
+	        	responseVO = this.returnError();
+	        	responseVO.setMessage(e.getMessage());
+	        }
+			return responseVO;
+			
+		}
 }
