@@ -59,6 +59,7 @@ public class ShiroConfiguration {
         filterChainDefinitionMap.put("/ImportExcelFileByName","anon"); 
         filterChainDefinitionMap.put("/zhideContract/updateData","anon"); 
         filterChainDefinitionMap.put("/zhideContract/exportData","anon"); 
+        filterChainDefinitionMap.put("/index.html","anon");
         
         filterChainDefinitionMap.put("/**", "authc");
         

@@ -29,6 +29,6 @@ public interface IUserInfoService {
     int delete(String userName);
 
     int update(UserInfoVO userInfoVO);
-
+    int updatePWD(UserInfoVO userInfoVO);
     int insert(UserInfoVO userInfoVO);
 }

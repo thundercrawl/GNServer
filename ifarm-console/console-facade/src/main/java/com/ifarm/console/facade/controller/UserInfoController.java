@@ -66,6 +66,18 @@ public class UserInfoController extends AbstractController{
         return responseVO;
     }
 
+    @RequestMapping("/updatePWD")
+    public ResponseVO updatePWD(@RequestBody UserInfoVO userInfoVO) {
+        ResponseVO responseVO = returnSuccess();
+        try {
+            userInfoService.updatePWD(userInfoVO);
+        } catch (Exception e) {
+            logger.error("", e);
+            return returnError(e.getMessage());
+        }
+        return responseVO;
+    }
+    
     @RequestMapping("/update")
     public ResponseVO update(@RequestBody UserInfoVO userInfoVO) {
         ResponseVO responseVO = returnSuccess();

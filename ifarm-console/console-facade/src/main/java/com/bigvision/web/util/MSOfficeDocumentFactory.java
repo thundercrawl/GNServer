@@ -120,7 +120,14 @@ public class MSOfficeDocumentFactory {
 		public static void CreateExlFile(List<String> column, List<List<String>> values,String filename)
 		{
 		        try {
-		        	logger.info("create excel file, col:"+column.size()+" values:"+values.size()+" filename:"+filename);
+		        	
+		        	if(values==null||filename==null||column==null) 
+		        	{
+		        		logger.error("empty data,  create  empty excel for it");
+		        		
+		        	}
+		        	else
+		        		logger.info("create excel file, col:"+column.size()+" values:"+values.size()+" filename:"+filename);
 		            HSSFWorkbook workbook = new HSSFWorkbook();
 		            HSSFSheet sheet = workbook.createSheet("FirstSheet");  
 

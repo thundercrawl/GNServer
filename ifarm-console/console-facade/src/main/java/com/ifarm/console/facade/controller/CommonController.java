@@ -109,8 +109,9 @@ public class CommonController extends AbstractController {
 		    		  rowItem.add(tmpPO.getLeftFundSum().toString());
 		    		  values.add(rowItem);
 		    	  }
-		    	  cols = Constants.getFundEfficientCol();
+		    	 
 	    	  }
+	    	  cols = Constants.getFundEfficientCol();
 	      }
 	      else if(name.equals("kunpeng")||name.equals("dingsheng"))
 	      {
@@ -165,9 +166,9 @@ public class CommonController extends AbstractController {
 		    		  
 		    		  values.add(rowItem);
 		    	  }
-		    	  cols = Constants.getKunpengDingshengCol();
+		    	
 	    	  }
-	      
+	    	  cols = Constants.getKunpengDingshengCol();
 	      }
 	      else if(name.equals("bussstat"))
 	      {
@@ -343,10 +344,10 @@ public class CommonController extends AbstractController {
 	    		  values.add(rowdingItem);
 	    		  
 		    	  
-		    	  cols = Constants.getBussstatCol();
+		    	 
 	    	  }
 	      
-	      
+	    	  cols = Constants.getBussstatCol();
 	      }
 	      else
 	      {
@@ -354,17 +355,18 @@ public class CommonController extends AbstractController {
 	    	  return null;
 	      }
 	      logger.info("start create excel file");
-	      if(!filename.equals(""))
+	      if(emtpydata)
+	      {
+	    	  MSOfficeDocumentFactory.CreateExlFile( cols,  filename);
+	      }
+	      else if(!filename.equals(""))
 	    	  MSOfficeDocumentFactory.CreateExlFile(cols, values, filename );
 	      else
 	      {
 	    	  logger.error("excel file name is empty");
 	    	  return null;
 	      }
-	      if(emtpydata)
-	      {
-	    	  MSOfficeDocumentFactory.CreateExlFile( Constants.getFundEfficientCol(),  filename);
-	      }
+	     
 	      File report = new File(filename);
 	      if(!report.exists())
 	      {

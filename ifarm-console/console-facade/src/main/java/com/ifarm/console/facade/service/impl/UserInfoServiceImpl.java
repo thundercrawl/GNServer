@@ -175,12 +175,15 @@ public class UserInfoServiceImpl implements IUserInfoService {
         return userMapper.update(userInfoPO);
     }
 
+    
+    
     @Override
     public int update(UserInfoVO userInfoVO) {
         this.check(userInfoVO);
         //update
         UserInfoPO userInfoPO = userInfoVO.getUserInfoDTO().convertPO();
         userInfoPO.setModifyTime(new Date());
+   
         int rt =  userMapper.update(userInfoPO);
         //set user permission
         List<String> permissions =Constants.convertRoleToResourceID( userInfoVO.getPermissionsNotRole());
@@ -200,6 +203,7 @@ public class UserInfoServiceImpl implements IUserInfoService {
         	resouceidbase++;
         	userMapper.insertUserPermissionNotRole(upo);
         }
+     
         return rt;
     }
 
@@ -261,4 +265,42 @@ public class UserInfoServiceImpl implements IUserInfoService {
         }
         return ret;
     }
+
+	@Override
+	public int updatePWD(UserInfoVO userInfoVO) {
+		// TODO Auto-generated method stub
+		int rt = -1;
+		 this.check(userInfoVO);
+	        //update
+	        UserInfoPO userInfoPO = userInfoVO.getUserInfoDTO().convertPO();
+	        userInfoPO.setModifyTime(new Date());
+	   
+		//set new password
+        
+	       
+        if(userInfoPO.getPassword()!=null && userInfoPO.getPassword()!= "")
+        {
+        logger.info("change user password, user:"+userInfoPO.getUserName());
+        String userName = userInfoPO.getUserName();
+        String password = userInfoPO.getPassword();
+       
+       
+        // 将用户名作为盐值
+        ByteSource salt = ByteSource.Util.bytes(userName);
+        /*
+        * MD5加密：
+        * 使用SimpleHash类对原始密码进行加密。
+        * 第一个参数代表使用MD5方式加密
+        * 第二个参数为原始密码
+        * 第三个参数为盐值，即用户名
+        * 第四个参数为加密次数
+        * 最后用toHex()方法将加密后的密码转成String
+        * */
+        String newPs = new SimpleHash("MD5", password, salt, 2).toHex().toUpperCase();
+
+        userInfoPO.setPassword(newPs);
+       rt= userMapper.update(userInfoPO);
+        }
+		return rt;
+	}
 }
