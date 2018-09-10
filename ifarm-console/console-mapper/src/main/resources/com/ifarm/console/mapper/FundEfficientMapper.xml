@@ -131,7 +131,7 @@
    values(#{fundUsage},#{createTime},#{modifyTime})
 </insert>
  <delete id="deleteCompany" parameterType="java.lang.Integer">
-        delete from t_fundefficientfundusage where id = #{tid}
+        delete from t_fundefficientcompany where id = #{tid}
     </delete>
     
      <delete id="deleteFundUsage" parameterType="java.lang.Integer">
