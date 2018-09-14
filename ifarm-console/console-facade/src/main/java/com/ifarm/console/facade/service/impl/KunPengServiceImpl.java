@@ -111,8 +111,8 @@ public class KunPengServiceImpl implements IKunPengService {
 					po.setOrdertime(DateTimeUtil.getDateByString((String)item.get(10)));
 					po.setFinishtime(DateTimeUtil.getDateByString((String)item.get(11)));
 					po.setFinishpeople(new Integer(item.get(12)));
-					po.setFundsum(new Integer(item.get(13)));
-					
+					po.setFundsum(new String(item.get(13)));
+					po.setFundUsage(new String(item.get(14)));
 					po.setModifyTime(new Date());
 					po.setCreateTime(new Date());
 				//	logger.info(item.get(0)+" "+item.get(1)+" "+item.get(2)+" "+item.get(3)+" "+item.get(4)+" "+item.get(5)+" "+po.getModifyTime()+" "+po.getCreateTime());
@@ -157,6 +157,12 @@ public class KunPengServiceImpl implements IKunPengService {
 		return kunpengmapper.updateCartype(po);
 	}
 
+	@Override
+	public List<KunPengPO> getKunPengByUsageAndMonth(String t1, String t2, String usage) {
+		// TODO Auto-generated method stub
+		return kunpengmapper.getKunPengByUsageAndMonth(t1,t2,usage);
+	}
 
+	
 
 }

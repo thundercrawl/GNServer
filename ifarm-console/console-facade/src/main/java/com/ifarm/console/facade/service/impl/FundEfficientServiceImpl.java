@@ -51,11 +51,11 @@ public class FundEfficientServiceImpl  implements IFundEfficientService {
 			FundEfficientPO po = new FundEfficientPO();
 			po.setFundDate(DateTimeUtil.getDateByString((String)item.get(0)));
 			po.setFundSource(item.get(1));
-			po.setFundSum(new Integer(item.get(2)));
+			po.setFundSum(new String(item.get(2)));
 			po.setFundUsage(item.get(3));
-			po.setMonthlyFundSum(new Integer(item.get(4)));
-			po.setAlreadyLentFundSum( new Integer(item.get(5)));
-			po.setLeftFundSum(new Integer(item.get(6)));
+			po.setMonthlyFundSum(new String(item.get(4)));
+			po.setAlreadyLentFundSum( new String(item.get(5)));
+			po.setLeftFundSum(new String(item.get(6)));
 			po.setModifyTime(new Date());
 			po.setCreateTime(new Date());
 			logger.info(item.get(0)+" "+item.get(1)+" "+item.get(2)+" "+item.get(3)+" "+item.get(4)+" "+item.get(5)+" "+po.getModifyTime()+" "+po.getCreateTime());

@@ -13,12 +13,12 @@ public class KunPengPO extends BasePO {
 	private Date ordertime;
 	private Date finishtime;
 	private Integer finishpeople;
-	private Integer fundsum;
+	private String fundsum;
 	private String carsalingprice;
 	private String carinvoiceprice;
 	private String carinsurance;
 	private String investsum;
-	
+	private String fundUsage;
     /**
      * @return String return the city
      */
@@ -134,14 +134,14 @@ public class KunPengPO extends BasePO {
     /**
      * @return Float return the fundsum
      */
-    public Integer getFundsum() {
+    public String getFundsum() {
         return fundsum;
     }
 
     /**
      * @param fundsum the fundsum to set
      */
-    public void setFundsum(Integer fundsum) {
+    public void setFundsum(String fundsum) {
         this.fundsum = fundsum;
     }
 
@@ -215,6 +215,21 @@ public class KunPengPO extends BasePO {
      */
     public void setInvestsum(String investsum) {
         this.investsum = investsum;
+    }
+
+
+    /**
+     * @return String return the fundUsage
+     */
+    public String getFundUsage() {
+        return fundUsage;
+    }
+
+    /**
+     * @param fundUsage the fundUsage to set
+     */
+    public void setFundUsage(String fundUsage) {
+        this.fundUsage = fundUsage;
     }
 
 }

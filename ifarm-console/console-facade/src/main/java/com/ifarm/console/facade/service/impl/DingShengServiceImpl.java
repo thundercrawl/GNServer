@@ -113,7 +113,7 @@ public class DingShengServiceImpl implements IDingShengService {
 					po.setOrdertime(DateTimeUtil.getDateByString((String)item.get(10)));
 					po.setFinishtime(DateTimeUtil.getDateByString((String)item.get(11)));
 					po.setFinishpeople(new Integer(item.get(12)));
-					po.setFundsum(new Integer(item.get(13)));
+					po.setFundsum(new String(item.get(13)));
 					
 					po.setModifyTime(new Date());
 					po.setCreateTime(new Date());
@@ -157,6 +157,12 @@ public class DingShengServiceImpl implements IDingShengService {
 	public int updateCartype(KunPengCartypePO po) {
 		// TODO Auto-generated method stub
 		return kunpengmapper.updateCartype(po);
+	}
+
+	@Override
+	public List<KunPengPO> getKunPengByUsageAndMonth(String t1, String t2, String usage) {
+		// TODO Auto-generated method stub
+		return kunpengmapper.getKunPengByUsageAndMonth(t1,t2,usage);
 	}
 
 

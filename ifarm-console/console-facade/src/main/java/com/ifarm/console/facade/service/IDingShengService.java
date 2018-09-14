@@ -39,5 +39,6 @@ public interface IDingShengService {
 	int update(KunPengPO po);
 	int insert(KunPengPO po);
 	List<KunPengPO> getKunPengByMonth(String t1,String t2);
+	List<KunPengPO> getKunPengByUsageAndMonth(String t1,String t2, String usage);
 	int deleteByID(Integer id);
 }

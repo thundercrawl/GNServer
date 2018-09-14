@@ -60,6 +60,7 @@ public class Constants {
 		cols.add("完成时间");
 		cols.add("完成人数");
 		cols.add("总融资额");
+		cols.add("资金用途");
 		return cols;
 	}
 	

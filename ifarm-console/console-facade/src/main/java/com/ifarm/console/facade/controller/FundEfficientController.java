@@ -10,7 +10,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bigvision.web.util.Constants;
+import com.ifarm.console.facade.service.IDingShengService;
 import com.ifarm.console.facade.service.IFundEfficientService;
+import com.ifarm.console.facade.service.IKunPengService;
+import com.ifarm.console.shared.domain.dto.FundEfficientDTO;
 import com.ifarm.console.shared.domain.po.FundEfficientCompanyPO;
 import com.ifarm.console.shared.domain.po.FundEfficientFundUsagePO;
 import com.ifarm.console.shared.domain.po.FundEfficientPO;
@@ -24,6 +28,12 @@ public class FundEfficientController extends AbstractController {
 	private static Logger logger = LoggerFactory.getLogger(FundEfficientController.class);
 	@Autowired
 	IFundEfficientService fundService;
+	
+	@Autowired
+	IKunPengService kunpengservice;
+	
+	@Autowired
+	IDingShengService dingshengservice;
 	
 	 @RequestMapping("/listbyMonth")
 	    public ResponseVO listbyMonth(String t1, String t2) {
@@ -40,6 +50,52 @@ public class FundEfficientController extends AbstractController {
 	        }
 	        return responseVO;
 	 }
+	 
+	 @RequestMapping("/listByUsageMonth")
+	 public ResponseVO listbyUsageAndMonth(@RequestBody FundEfficientPO po ) {
+	        ResponseVO responseVO = returnSuccess();
+	        try {
+		  
+	       String  t1= (po.getFundDate().getYear()+1900)+"-"+(po.getFundDate().getMonth()+1)+"-"+"01";
+	       String t2 = ( po.getFundDate().getYear()+1900)+"-"+(po.getFundDate().getMonth()+1)+"-"+"31";
+	       FundEfficientDTO dto = new FundEfficientDTO();
+		    dto.setAlreadyLentFundSum("0");
+		    logger.info("listByUsageMonth: "+ t1+" -- "+t2);
+		    if(po.getFundSource().equals(Constants.KUN_PENG))
+		    {
+		    	   List<KunPengPO>  poskun = kunpengservice.getKunPengByUsageAndMonth(t1, t2,po.getFundUsage());
+		    	   for(KunPengPO po1:poskun)
+				    {
+		    		   Float tmpF = new Float(dto.getAlreadyLentFundSum())+new Float(po1.getFundsum());
+				    	dto.setAlreadyLentFundSum(tmpF.toString());
+			        }
+		    }
+		    else if(po.getFundSource().equals(Constants.DING_SHENG))
+		    {
+		    	List<KunPengPO>  posding = dingshengservice.getKunPengByUsageAndMonth(t1, t2,po.getFundUsage());
+				  
+			    
+		        for(KunPengPO po1:posding)
+		        {
+		        	 Float tmpF = new Float(dto.getAlreadyLentFundSum())+new Float(po1.getFundsum());
+				    dto.setAlreadyLentFundSum(tmpF.toString());
+		        }
+		    }
+		    else {
+		    	logger.error("Cannot find correct bussiness source: "+po.getFundSource());
+		    	responseVO =  returnError("Cannot find correct bussiness source: "+po.getFundSource());
+		    	return responseVO;
+		    }
+	        responseVO.setResult(dto);
+	        }
+	        catch(Exception e)
+	        {
+	        	e.printStackTrace();
+	        	responseVO = this.returnError();
+	        	responseVO.setMessage(e.getMessage());
+	        }
+		  return responseVO;
+	  }
 	 
 	 @RequestMapping("/list")
 	    public ResponseVO getFundByMonth() {

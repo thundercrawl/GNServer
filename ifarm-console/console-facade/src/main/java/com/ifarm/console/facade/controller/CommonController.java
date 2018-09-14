@@ -163,7 +163,7 @@ public class CommonController extends AbstractController {
 		    		  rowItem.add(DateTimeUtil.getLocaldate(tmpPO.getFinishtime())) ;
 		    		  rowItem.add(tmpPO.getFinishpeople().toString());
 		    		  rowItem.add(tmpPO.getFundsum().toString());
-		    		  
+		    		  rowItem.add(tmpPO.getFundUsage().toString());
 		    		  values.add(rowItem);
 		    	  }
 		    	
@@ -204,22 +204,22 @@ public class CommonController extends AbstractController {
 		        	itemKunPeng.setValues(kunpeng);
 		        	itemDingSheng.setValues(dingsheng);
 		        
-		        	Integer v1 = 0,v2 =0, v3 =0,v4 =0, v5 =0, v6 = 0;
+		        	Float v1 = new Float(0),v2 =new Float(0),v3 =new Float(0),v4 =new Float(0), v5 =new Float(0), v6 = new Float(0);
 		        	
 		        	for(FundEfficientPO index:kunpeng)
 		        	{
-		        		v1+=index.getFundSum();
-		        		v2+= index.getLeftFundSum();
-		        		v3+= index.getMonthlyFundSum();
+		        		v1+=new Float(index.getFundSum());
+		        		v2+= new Float(index.getLeftFundSum());
+		        		v3+= new Float(index.getMonthlyFundSum());
 		        	}
 		        	itemKunPeng.setFundSum(v1);
 		        	itemKunPeng.setLeftfundSum(v2);
 		        	itemKunPeng.setMonthlyFundSum(v3);
 		        	for(FundEfficientPO index:dingsheng)
 		        	{
-		        		v4+= index.getFundSum();
-		        		v5+= index.getLeftFundSum();
-		        		v6+= index.getMonthlyFundSum();
+		        		v4+= new Float(index.getFundSum());
+		        		v5+= new Float(index.getLeftFundSum());
+		        		v6+= new Float(index.getMonthlyFundSum());
 		        	}
 		        	
 		        	
@@ -234,29 +234,29 @@ public class CommonController extends AbstractController {
 		        	List<KunPengPO>dingshengPOS =  dingshengService.getKunPengByMonth(date+"-01", date+"-31");
 		        	vo.setKunpeng(kunpengPOS);
 		        	vo.setDingsheng(dingshengPOS);
-		        	v1 = v2 = v3 = v4 = v5 = v6 = 0;
+		        	Integer v11 =0, v22 =0, v33=0,  v44 =0, v55 =0, v66 = 0;
 		        	for(KunPengPO index:kunpengPOS)
 		        	{
-		        		v1+=index.getPassedpeople();
-		        		v2+=index.getFinishpeople();
+		        		v11+=index.getPassedpeople();
+		        		v22+=index.getFinishpeople();
 		        		
 		        	}
-		        	v3 = v1-v2;
+		        	v33 = v11-v22;
 		        	
-		        	itemKunPeng.setPassedpeople(v1);
-		        	itemKunPeng.setFinishpeople(v2);
-		        	itemKunPeng.setWaitPeople(v3);
+		        	itemKunPeng.setPassedpeople(v11);
+		        	itemKunPeng.setFinishpeople(v22);
+		        	itemKunPeng.setWaitPeople(v33);
 		        	
 		        	for(KunPengPO index:dingshengPOS)
 		        	{
-		        		v4+=index.getPassedpeople();
-		        		v5+=index.getFinishpeople();
+		        		v44+=index.getPassedpeople();
+		        		v55+=index.getFinishpeople();
 		        		
 		        	}
-		        	v6 = v4-v5;
-		        	itemDingSheng.setPassedpeople(v4);
-		        	itemDingSheng.setFinishpeople(v5);
-		        	itemDingSheng.setWaitPeople(v6);
+		        	v66 = v44-v55;
+		        	itemDingSheng.setPassedpeople(v44);
+		        	itemDingSheng.setFinishpeople(v55);
+		        	itemDingSheng.setWaitPeople(v66);
 		        	vo.setDingshengitem(itemDingSheng);
 		        	vo.setKunpengitem(itemKunPeng);
 		        

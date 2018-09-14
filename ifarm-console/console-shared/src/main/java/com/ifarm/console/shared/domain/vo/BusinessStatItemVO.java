@@ -11,9 +11,9 @@ public class BusinessStatItemVO  {
 	private Integer finishpeople;
 	private Integer waitPeople;
 
-	private Integer fundSum;
-	private Integer leftfundSum;
-	private Integer monthlyFundSum;
+	private Float fundSum;
+	private Float leftfundSum;
+	private Float monthlyFundSum;
 	
 	
 	private List<FundEfficientPO> values;
@@ -63,28 +63,28 @@ public class BusinessStatItemVO  {
     /**
      * @return Integer return the fundSum
      */
-    public Integer getFundSum() {
+    public Float getFundSum() {
         return fundSum;
     }
 
     /**
      * @param fundSum the fundSum to set
      */
-    public void setFundSum(Integer fundSum) {
+    public void setFundSum(Float fundSum) {
         this.fundSum = fundSum;
     }
 
     /**
      * @return Integer return the monthlyFundSum
      */
-    public Integer getMonthlyFundSum() {
+    public Float getMonthlyFundSum() {
         return monthlyFundSum;
     }
 
     /**
      * @param monthlyFundSum the monthlyFundSum to set
      */
-    public void setMonthlyFundSum(Integer monthlyFundSum) {
+    public void setMonthlyFundSum(Float monthlyFundSum) {
         this.monthlyFundSum = monthlyFundSum;
     }
 
@@ -107,14 +107,14 @@ public class BusinessStatItemVO  {
     /**
      * @return Integer return the leftfundSum
      */
-    public Integer getLeftfundSum() {
+    public Float getLeftfundSum() {
         return leftfundSum;
     }
 
     /**
      * @param leftfundSum the leftfundSum to set
      */
-    public void setLeftfundSum(Integer leftfundSum) {
+    public void setLeftfundSum(Float leftfundSum) {
         this.leftfundSum = leftfundSum;
     }
 

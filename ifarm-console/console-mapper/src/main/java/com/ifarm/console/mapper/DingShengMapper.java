@@ -31,6 +31,7 @@ public interface DingShengMapper {
 	
 	
 	List<KunPengPO> getKunPengByMonth(@Param("t1")String t1,@Param("t2")String t2);
+	List<KunPengPO> getKunPengByUsageAndMonth(@Param("t1")String t1,@Param("t2")String t2,@Param("usage")String usage);
 	List<KunPengPO> list(); 
 	int insert(KunPengPO po);
 	int deleteByID(Integer id);

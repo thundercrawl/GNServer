@@ -16,6 +16,7 @@
 <result property="finishtime" column="finishtime"/>
 <result property="finishpeople" column="finishpeople"/>
 <result property="fundsum" column="fundsum"/>
+<result property="fundUsage" column="fundUsage"/>
      <result column="create_time" property="createTime"/>
      <result column="modify_time" property="modifyTime"/>
 </resultMap>  
@@ -46,7 +47,9 @@
      <result column="modify_time" property="modifyTime"/>
 </resultMap> 
 
-
+<select id = "getKunPengByUsageAndMonth" parameterType = "java.lang.String" resultMap = "result">
+   select * from t_kunpeng where kunpengDate between #{t1} and #{t2} and fundUsage = #{usage}
+</select>
 <select id = "getKunPengByMonth" parameterType = "java.lang.String" resultMap = "result">
    select * from t_kunpeng where kunpengDate between #{t1} and #{t2}
 </select>
@@ -79,8 +82,8 @@
 
 
 <insert id="insert" parameterType="com.ifarm.console.shared.domain.po.KunPengPO">  
-    insert into t_kunpeng (kunpengDate,city,company,cartype,carsalingprice,carinvoiceprice,carinsurance,investsum,beianpeople,passedpeople,ordertime,finishtime,finishpeople,fundsum,create_time,modify_time)  
-    values(#{kunpengDate},#{city},#{company},#{cartype},#{carsalingprice},#{carinvoiceprice},#{carinsurance},#{investsum},#{beianpeople},#{passedpeople},#{ordertime},#{finishtime},#{finishpeople},#{fundsum},#{createTime},#{modifyTime})  
+    insert into t_kunpeng (kunpengDate,city,company,cartype,carsalingprice,carinvoiceprice,carinsurance,investsum,beianpeople,passedpeople,ordertime,finishtime,finishpeople,fundsum,fundUsage,create_time,modify_time)  
+    values(#{kunpengDate},#{city},#{company},#{cartype},#{carsalingprice},#{carinvoiceprice},#{carinsurance},#{investsum},#{beianpeople},#{passedpeople},#{ordertime},#{finishtime},#{finishpeople},#{fundsum},#{fundUsage},#{createTime},#{modifyTime})  
 </insert> 
 
 <select id = "list"  resultMap = "result">
@@ -199,6 +202,9 @@ update t_kunpengCartype
             </if>
             <if test="fundsum != null ">
                 fundsum = #{fundsum},
+            </if>
+            <if test="fundUsage != null ">
+                fundUsage = #{fundUsage},
             </if>
             <if test="createTime != null">
                 create_time = #{createTime},

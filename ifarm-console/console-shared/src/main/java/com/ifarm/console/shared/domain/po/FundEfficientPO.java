@@ -10,24 +10,24 @@ public class FundEfficientPO extends BasePO {
 	private int id;
 	private Date fundDate;
 	private String fundSource;
-	private Integer fundSum;
+	private String fundSum;
 	private String fundUsage;
-	private Integer monthlyFundSum;
-	private Integer alreadyLentFundSum;
-	private Integer leftFundSum;
+	private String monthlyFundSum;
+	private String alreadyLentFundSum;
+	private String leftFundSum;
 	
 
     /**
      * @return float return the LeftFundSum
      */
-    public Integer getLeftFundSum() {
+    public String getLeftFundSum() {
         return leftFundSum;
     }
 
     /**
      * @param LeftFundSum the LeftFundSum to set
      */
-    public void setLeftFundSum(Integer LeftFundSum) {
+    public void setLeftFundSum(String LeftFundSum) {
         this.leftFundSum = LeftFundSum;
     }
 
@@ -63,14 +63,14 @@ public class FundEfficientPO extends BasePO {
     /**
      * @return float return the fundSum
      */
-    public Integer getFundSum() {
+    public String getFundSum() {
         return fundSum;
     }
 
     /**
      * @param fundSum the fundSum to set
      */
-    public void setFundSum(Integer fundSum) {
+    public void setFundSum(String fundSum) {
         this.fundSum = fundSum;
     }
 
@@ -91,28 +91,28 @@ public class FundEfficientPO extends BasePO {
     /**
      * @return float return the monthlyFundSum
      */
-    public Integer getMonthlyFundSum() {
+    public String getMonthlyFundSum() {
         return monthlyFundSum;
     }
 
     /**
      * @param monthlyFundSum the monthlyFundSum to set
      */
-    public void setMonthlyFundSum(Integer monthlyFundSum) {
+    public void setMonthlyFundSum(String monthlyFundSum) {
         this.monthlyFundSum = monthlyFundSum;
     }
 
     /**
      * @return float return the alreadyLentFundSum
      */
-    public Integer getAlreadyLentFundSum() {
+    public String getAlreadyLentFundSum() {
         return alreadyLentFundSum;
     }
 
     /**
      * @param alreadyLentFundSum the alreadyLentFundSum to set
      */
-    public void setAlreadyLentFundSum(Integer alreadyLentFundSum) {
+    public void setAlreadyLentFundSum(String alreadyLentFundSum) {
         this.alreadyLentFundSum = alreadyLentFundSum;
     }
 

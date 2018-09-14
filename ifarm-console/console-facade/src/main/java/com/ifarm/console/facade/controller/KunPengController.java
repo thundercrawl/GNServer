@@ -67,6 +67,7 @@ public class KunPengController extends AbstractController {
 	}
 	
 	 
+	 
 	  @RequestMapping("/list")
 	    public ResponseVO list() {
 	        ResponseVO responseVO = returnSuccess();
