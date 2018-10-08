@@ -42,6 +42,7 @@ public class FundEfficientController extends AbstractController {
 		 
 		 try {
 	            List<FundEfficientPO> fundList = fundService.getByMonth(t1, t2);
+	            resetFundValue(fundList);
 	            responseVO.setResult(fundList);
 	          //  logger.info("permission is:"+responseVO.toString());
 	        } catch (Exception e) {
@@ -97,6 +98,55 @@ public class FundEfficientController extends AbstractController {
 		  return responseVO;
 	  }
 	 
+	 private void resetFundValue(List<FundEfficientPO> pos)
+	 {
+		 for(FundEfficientPO po: pos)
+		 {
+			
+	       String  t1= (po.getFundDate().getYear()+1900)+"-"+(po.getFundDate().getMonth()+1)+"-"+"01";
+	       String t2 = ( po.getFundDate().getYear()+1900)+"-"+(po.getFundDate().getMonth()+1)+"-"+"31";
+	       FundEfficientDTO dto = new FundEfficientDTO();
+		    dto.setAlreadyLentFundSum("0");
+		    logger.info("listByUsageMonth: "+ t1+" -- "+t2);
+		    if(po.getFundSource().equals(Constants.KUN_PENG))
+		    {
+		    	   List<KunPengPO>  poskun = kunpengservice.getKunPengByUsageAndMonth(t1, t2,po.getFundUsage());
+		    	   for(KunPengPO po1:poskun)
+				    {
+		    		   Float tmpF = new Float(dto.getAlreadyLentFundSum())+new Float(po1.getFundsum());
+				    	dto.setAlreadyLentFundSum(tmpF.toString());
+			        }
+		    }
+		    else if(po.getFundSource().equals(Constants.DING_SHENG))
+		    {
+		    	List<KunPengPO>  posding = dingshengservice.getKunPengByUsageAndMonth(t1, t2,po.getFundUsage());
+				  
+			    
+		        for(KunPengPO po1:posding)
+		        {
+		        	 Float tmpF = new Float(dto.getAlreadyLentFundSum())+new Float(po1.getFundsum());
+				    dto.setAlreadyLentFundSum(tmpF.toString());
+		        }
+		    }
+		    else {
+		    	logger.error("Cannot find correct bussiness source: "+po.getFundSource());
+		    
+		    }
+		    boolean changed =false;
+		    if(!po.getAlreadyLentFundSum().equals( dto.getAlreadyLentFundSum())) changed = true;
+		   
+		    
+		    if(changed)
+		    {
+		    	 po.setAlreadyLentFundSum(dto.getAlreadyLentFundSum());
+		    	 Float tmpFloat = new Float(po.getMonthlyFundSum())-new Float(po.getAlreadyLentFundSum());
+		    	 po.setLeftFundSum(tmpFloat.toString());
+		    	fundService.update(po);
+		    	changed =false;
+		    }
+		    
+		 }//for
+	 }
 	 @RequestMapping("/list")
 	    public ResponseVO getFundByMonth() {
 		 
@@ -104,7 +154,7 @@ public class FundEfficientController extends AbstractController {
 		 
 		 try {
 	            List<FundEfficientPO> fundList = fundService.getAll();
-	       
+	            resetFundValue(fundList);
 	            responseVO.setResult(fundList);
 	          
 	        } catch (Exception e) {
@@ -157,6 +207,12 @@ public class FundEfficientController extends AbstractController {
 			try  
 			{ 
 				po.setModifyTime(new Date());
+				if(po.getMonthlyFundSum() != null && po.getAlreadyLentFundSum() !=null)
+				{
+					Float tmpF = new Float(po.getMonthlyFundSum())-new Float(po.getAlreadyLentFundSum());
+					
+				//	po.setLeftFundSum(tmpF.to);
+				}
 				fundService.update(po);
 			}  
 			 catch(Exception e)

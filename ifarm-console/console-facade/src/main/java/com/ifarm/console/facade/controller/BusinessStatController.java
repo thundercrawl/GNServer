@@ -82,7 +82,8 @@ public class BusinessStatController extends AbstractController {
 	        	
 	        	for(FundEfficientPO index:kunpeng)
 	        	{
-	        		v1+=new Float(index.getFundSum());
+	        		
+	        		v1+=new Float(index.getAlreadyLentFundSum());
 	        		v2+= new Float(index.getLeftFundSum());
 	        		v3+= new Float(index.getMonthlyFundSum());
 	        	}
@@ -91,7 +92,7 @@ public class BusinessStatController extends AbstractController {
 	        	itemKunPeng.setMonthlyFundSum(v3);
 	        	for(FundEfficientPO index:dingsheng)
 	        	{
-	        		v4+= new Float(index.getFundSum());
+	        		v4+= new Float(index.getAlreadyLentFundSum());
 	        		v5+= new Float(index.getLeftFundSum());
 	        		v6+= new Float(index.getMonthlyFundSum());
 	        	}
