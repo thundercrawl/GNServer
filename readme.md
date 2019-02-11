@@ -11,3 +11,7 @@ Features
 2. Access code integration in system
 
 
+Install guide
+1. install mysql and redis before run the project
+2. mvn clean package -DskipTests=true
+3. java -jar ifarm-console-exec.jar
